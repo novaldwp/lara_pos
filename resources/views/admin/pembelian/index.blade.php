@@ -249,14 +249,21 @@ $(document).ready(function(){
 
     $('#tambah').on('click', function(e){
         e.preventDefault();
-        $.ajax({
-            url:'pembelian/storeDummy',
-            type: 'POST',
-            dataType: 'JSON',
-            success:function(data){
+        if ($('#produk_id').val() == '')
+        {
+            swal({
+                title:"Pilih produk terlebih dahulu!",
+                type: "warning",
+                timer: 1000,
+                showConfirmButton: false
+            });
 
-            }
-        })
+            $('#produk_kode').focus();
+        }
+        else{
+            alert("wokeh");
+        }
+
     })
 
 });
