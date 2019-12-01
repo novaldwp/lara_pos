@@ -273,8 +273,8 @@ $(document).ready(function(){
             $('#produk_kode').focus();
         }
         else{
-            coba nulis asal asalan disini ah mau di cek ke github huhu
 
+            coba lagi ah wkwkwk
 
             $.ajax({
                 url:'',
