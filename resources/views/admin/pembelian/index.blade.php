@@ -249,7 +249,19 @@ $(document).ready(function(){
 
     $('#tambah').on('click', function(e){
         e.preventDefault();
-        if ($('#produk_id').val() == '')
+
+        if($('#pembelian_kode').val() == '')
+        {
+            swal({
+                title:"Generate kode pembelian terlebih dahulu!",
+                type: "warning",
+                timer: 1000,
+                showConfirmButton: false
+            });
+
+            $('#produk_kode').focus();
+        }
+        else if ($('#produk_id').val() == '')
         {
             swal({
                 title:"Pilih produk terlebih dahulu!",
@@ -261,7 +273,23 @@ $(document).ready(function(){
             $('#produk_kode').focus();
         }
         else{
-            alert("wokeh");
+
+            $.ajax({
+                url:'',
+                type:'POST',
+                dataType:'JSON',
+                data:
+                success:function(res)
+                {
+
+                },
+                error:function(xhr)
+                {
+                    var res = xhr.responseJSON;
+
+                    console.log(res);
+                }
+            })
         }
 
     })
