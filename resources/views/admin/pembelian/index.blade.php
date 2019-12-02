@@ -56,7 +56,7 @@
             <div class="form-group">
                 <label class="control-label col-sm-4">Jumlah Beli :</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control" id="produk_jumlah">
+                    <input type="text" class="form-control" id="pembelian_jumlah" name="pembelian_jumlah">
                 </div>
             </div>
             <div class="form-group">
@@ -82,7 +82,7 @@
                 <div class="col-sm-8">
                     <div class="clearfix">
                         <div class="input-group">
-                            <input type="text" class="form-control" name="transaksi_kode" id="transaksi_kode" placeholder="No. Transaksi" readonly>
+                            <input type="text" class="form-control" name="pembelian_kode" id="pembelian_kode" placeholder="No. Transaksi" readonly>
                             <span class="input-group-addon info" id="generate" style="cursor: pointer">Generate!</span>
                         </div>
                     </div>
@@ -212,17 +212,17 @@ $(document).ready(function(){
             type: 'POST',
             dataType: 'JSON',
             success:function(data){
-                $("#transaksi_kode").val(data);
+                $("#pembelian_kode").val(data);
             }
         })
-    })
+    });
 
     $("#search").on('click', function(e){
         e.preventDefault();
         var modal = $('#formModal');
 
         modal.modal('show');
-    })
+    });
 
     $('#data-table').on('click', '#select', function(e){
         e.preventDefault();
@@ -245,7 +245,7 @@ $(document).ready(function(){
                 modal.modal('hide');
             }
         })
-    })
+    });
 
     $('#tambah').on('click', function(e){
         e.preventDefault();
@@ -273,28 +273,10 @@ $(document).ready(function(){
             $('#produk_kode').focus();
         }
         else{
-
-            coba lagi ah wkwkwk
-
-            $.ajax({
-                url:'',
-                type:'POST',
-                dataType:'JSON',
-                data:
-                success:function(res)
-                {
-
-                },
-                error:function(xhr)
-                {
-                    var res = xhr.responseJSON;
-
-                    console.log(res);
-                }
-            })
+            alert("wokeh");
         }
 
-    })
+    });
 
 });
 </script>
