@@ -29,8 +29,8 @@
                     <td>{{ $row->produk->produk_nama }}</td>
                     <td>{{ $row->produk->produk_beli }}</td>
                     <td>{{ $row->pembelian_jumlah }}</td>
-                    <td>{{ $row->produk->produk_beli * $row->pembelian_jumlah }}</td>
-                    <td>Edit | Delete</td>
+                    <td>{{ $row->subtotal }}</td>
+                    <td><a class="btn btn-danger" data-toggle="tooltip" title="Hapus"><span class="fa fa-trash" produk-id="{{ $row->produk_id }}"></span></a></td>
                 </tr>
                 @endforeach
                 <tr>

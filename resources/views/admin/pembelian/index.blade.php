@@ -32,7 +32,7 @@
                 <div class="col-sm-8">
                     <div class="clearfix">
                         <div class="input-group">
-                            <input type="text" class="form-control" name="produk_kode" id="produk_kode" placeholder="Kode Produk" aria-describedby="search" oninput="ajax_barang_by_kode(this.value);" autocomplete="off" autofocus>
+                            <input type="text" class="form-control" name="produk_kode" id="produk_kode" placeholder="Kode Produk" aria-describedby="search" autocomplete="off" autofocus>
                             <span class="input-group-addon blue" id="search" style="cursor: pointer"><span class="fa fa-search" title="Pencarian Barang"></span></span>
                         </div>
                     </div>
@@ -185,6 +185,34 @@ $(document).ready(function(){
               }
             });
 
+    function tampil_detail(){
+        $('.tampil-detail').load('get_pembelian_detail');
+    }
+
+    $('#produk_kode').on('input', function(){
+        var produk_kode = $('#produk_kode').val();
+        $.ajax({
+            url:'pembelian/get_produk_by_kode/'+produk_kode,
+            type: 'GET',
+            dataType: 'JSON',
+            success:function(data)
+            {
+                var stok    = (data.stok == null) ? '0' : data.stok.stok_jumlah;
+
+                $('#produk_id').val(data.produk_id);
+                $('#produk_nama').val(data.produk_nama);
+                $('#produk_beli').val(data.produk_beli);
+                $('#stok_jumlah').val(stok);
+            },
+            error:function(xhr)
+            {
+                var res = xhr.responseTEXT;
+
+                alert(res);
+            }
+        })
+
+    })
 
     $("#generate").on('click', function(e){
         e.preventDefault();
@@ -220,6 +248,7 @@ $(document).ready(function(){
                     modal   = $('#formModal');
 
                 $('#produk_id').val(data[0].produk_id);
+                $('#produk_kode').val(data[0].produk_kode);
                 $('#produk_nama').val(data[0].produk_nama);
                 $('#produk_beli').val(data[0].produk_beli);
                 $('#stok_jumlah').val(stok);
@@ -265,20 +294,25 @@ $(document).ready(function(){
                 data:{produk_id:produk_id, pembelian_jumlah:pembelian_jumlah, produk_beli:produk_beli},
                 success:function(res)
                 {
+                    $('#pembelian_jumlah').val('');
+                    $('#produk_id').val('');
+                    $('#produk_kode').val('');
+                    $('#produk_beli').val('');
+                    $('#produk_nama').val('');
+                    $('#stok_jumlah').val('');
                     tampil_detail();
+                    $('#produk_kode').focus();
                 },
                 error:function(xhr)
                 {
+                    var res = xhr.responseTEXT;
 
+                    alert(rest);
                 }
             })
         }
 
     });
-
-    function tampil_detail(){
-        $('.tampil-detail').load('get_pembelian_detail');
-    }
 
 });
 </script>

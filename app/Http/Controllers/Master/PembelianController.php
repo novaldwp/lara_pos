@@ -124,23 +124,6 @@ class PembelianController extends Controller
         return response()->json($produk);
     }
 
-    public function storeDummy(Request $request)
-    {
-        $produk_id          = $request->input('produk_id');
-        $pembelian_jumlah   = $request->input('pembelian_jumlah');
-        $produk_beli        = $request->input('produk_beli');
-        $subtotal           = $pembelian_jumlah * $produk_beli;
-
-        $pdummy                     = new PembelianDummy;
-        $pdummy->produk_id          = $produk_id;
-        $pdummy->pembelian_jumlah   = $pembelian_jumlah;
-        $pdummy->produk_beli        = $produk_beli;
-        $pdummy->subtotal           = $subtotal;
-        $pdummy->save();
-
-        return response()->json("suksesssss");
-    }
-
     public function get_pembelian_detail()
     {
         $pdummy = PembelianDummy::with(['produk'])->orderBy('pembeliandummy_id', 'DESC')->get();
@@ -148,4 +131,41 @@ class PembelianController extends Controller
         return view('admin.pembelian.detail', compact('pdummy', 'gtotal'));
     }
 
+    public function get_produk_by_kode($kode)
+    {
+        $produk = Produk::with(['stok'])->where('produk_kode', $kode)->first();
+
+        return response()->json($produk);
+    }
+    public function storeDummy(Request $request)
+    {
+        $produk_id          = $request->input('produk_id');
+        $pembelian_jumlah   = $request->input('pembelian_jumlah');
+        $produk_beli        = $request->input('produk_beli');
+        $subtotal           = $pembelian_jumlah * $produk_beli;
+
+        $count = PembelianDummy::where('produk_id', $produk_id)->count();
+        if ($count > 0 )
+        {
+            $fdummy = PembelianDummy::where('produk_id', $produk_id)->firstOrFail();
+            $fdummy->pembelian_jumlah = $fdummy->pembelian_jumlah + $pembelian_jumlah;
+            $fdummy->save();
+        }
+        else{
+
+            $pdummy                     = new PembelianDummy;
+            $pdummy->produk_id          = $produk_id;
+            $pdummy->pembelian_jumlah   = $pembelian_jumlah;
+            $pdummy->produk_beli        = $produk_beli;
+            $pdummy->subtotal           = $subtotal;
+            $pdummy->save();
+
+        }
+        return response()->json("suksesssss");
+    }
+
+    public function deleteDummy($id)
+    {
+
+    }
 }
