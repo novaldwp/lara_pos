@@ -15,7 +15,7 @@ class Kategori extends Model
     ];
 
     public function produk(){
-        return $this->belongsTo('App\Produk');
+        return $this->hasOne(Produk::class, 'kategori_id');
     }
 
 }

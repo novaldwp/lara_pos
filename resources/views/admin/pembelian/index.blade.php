@@ -97,6 +97,13 @@
             </div>
 
             <div class="form-group">
+                    <label class="control-label col-sm-4">Harga Beli :</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="produk_beli" readonly>
+                    </div>
+            </div>
+
+            <div class="form-group">
                 <label class="control-label col-sm-4 pull-left">Supplier :</label>
                 <div class="col-sm-8">
                     <select name="supplier_id" id="supplier_id" class="form-control">
@@ -117,37 +124,9 @@
   </div>
 </div>
 <!-- End of Atas-->
+<div class="tampil-detail">
 
-<!-- Start of Bawah -->
-<div class="row">
-    <div class="col-xs-12">
-      <div class="box">
-        <div class="box-header">
-          <h4>Detail Pembelian</h4>
-          <hr>
-        </div>
-        <div class="box-body">
-        <!-- Content body-->
-        <table class="table table-responsive table-hover table-striped" id="detail-table">
-            <thead>
-                <tr>
-                    <th width="30">No</th>
-                    <th>Kode Produk</th>
-                    <th>Nama Produk</th>
-                    <th>Harga Beli</th>
-                    <th>Jumlah</th>
-                    <th>Sub Total</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-        </table>
-
-        <!-- End of Content body-->
-        </div>
-      </div>
-    </div>
 </div>
-<!-- End of Bawah -->
 @include('admin.pembelian.search')
 @endsection
 
@@ -160,6 +139,8 @@ $(document).ready(function(){
           'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
         }
     });
+
+    tampil_detail();
 
     table = $("#data-table").DataTable({
               responsive: true,
@@ -240,6 +221,7 @@ $(document).ready(function(){
 
                 $('#produk_id').val(data[0].produk_id);
                 $('#produk_nama').val(data[0].produk_nama);
+                $('#produk_beli').val(data[0].produk_beli);
                 $('#stok_jumlah').val(stok);
 
                 modal.modal('hide');
@@ -249,6 +231,9 @@ $(document).ready(function(){
 
     $('#tambah').on('click', function(e){
         e.preventDefault();
+        var produk_id        = $('#produk_id').val(),
+            pembelian_jumlah = $('#pembelian_jumlah').val(),
+            produk_beli      = $('#produk_beli').val();
 
         if($('#pembelian_kode').val() == '')
         {
@@ -273,10 +258,27 @@ $(document).ready(function(){
             $('#produk_kode').focus();
         }
         else{
-            alert("wokeh");
+            $.ajax({
+                url:'pembelian/storeDummy',
+                type:'POST',
+                dataType:'JSON',
+                data:{produk_id:produk_id, pembelian_jumlah:pembelian_jumlah, produk_beli:produk_beli},
+                success:function(res)
+                {
+                    tampil_detail();
+                },
+                error:function(xhr)
+                {
+
+                }
+            })
         }
 
     });
+
+    function tampil_detail(){
+        $('.tampil-detail').load('get_pembelian_detail');
+    }
 
 });
 </script>

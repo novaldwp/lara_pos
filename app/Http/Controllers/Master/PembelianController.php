@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use DB;
 use Session;
 use App\Pembelian;
+use App\PembelianDummy;
 use App\Supplier;
 use App\Produk;
 use App\Stok;
@@ -125,7 +126,26 @@ class PembelianController extends Controller
 
     public function storeDummy(Request $request)
     {
+        $produk_id          = $request->input('produk_id');
+        $pembelian_jumlah   = $request->input('pembelian_jumlah');
+        $produk_beli        = $request->input('produk_beli');
+        $subtotal           = $pembelian_jumlah * $produk_beli;
 
+        $pdummy                     = new PembelianDummy;
+        $pdummy->produk_id          = $produk_id;
+        $pdummy->pembelian_jumlah   = $pembelian_jumlah;
+        $pdummy->produk_beli        = $produk_beli;
+        $pdummy->subtotal           = $subtotal;
+        $pdummy->save();
+
+        return response()->json("suksesssss");
+    }
+
+    public function get_pembelian_detail()
+    {
+        $pdummy = PembelianDummy::with(['produk'])->orderBy('pembeliandummy_id', 'DESC')->get();
+        $gtotal = $pdummy->sum('subtotal');
+        return view('admin.pembelian.detail', compact('pdummy', 'gtotal'));
     }
 
 }

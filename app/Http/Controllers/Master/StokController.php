@@ -8,6 +8,8 @@ use DB;
 use Session;
 use App\Stok;
 use App\Produk;
+use App\PembelianDummy;
+use App\Kategori;
 
 class StokController extends Controller
 {
@@ -115,9 +117,9 @@ class StokController extends Controller
 
     public function test()
     {
-        $id = 1;
-        $stok = Produk::with(['stok'])->where('produk_id', $id)->get();
-
-        return response()->json(['data' => $stok]);
+        // $id = 1;
+        // $stok = Produk::with(['stok'])->where('produk_id', $id)->get();
+        $pdummy = PembelianDummy::with(['produk'])->orderBy('pembeliandummy_id', 'DESC')->get();
+        return response()->json(['data' => $pdummy]);
     }
 }

@@ -1,5 +1,5 @@
 <?php
-
+use App\PembelianDummy;
 
 
 Route::get('/', 'HomeController@index')->name('home');
@@ -22,6 +22,8 @@ Route::group(['middleware' => 'web', 'cekuser:1'], function(){
 
     Route::post('member/get_id_member', 'Master\MemberController@get_id_member');
     Route::post('pembelian/get_pembelian_kode', 'Master\PembelianController@get_pembelian_kode');
+    Route::post('pembelian/storeDummy', 'Master\PembelianController@storeDummy');
+    Route::get('get_pembelian_detail', 'Master\PembelianController@get_pembelian_detail');
     Route::post('produk/get_produk_kode', 'Master\ProdukController@get_produk_kode');
 
     Route::get('pembelian/get_by_id/{id}', 'Master\PembelianController@get_by_id');

@@ -33,10 +33,14 @@ class Produk extends Model
     }
 
     public function kategori(){
-        return $this->hasMany('App\Kategori');
+        return $this->belongsTo(Kategori::class, 'kategori_id');
     }
 
     public function stok(){
         return $this->hasOne(Stok::class, 'produk_id');
+    }
+
+    public function pembeliandummy(){
+        return $this->hasOne(PembelianDummy::class, 'produk_id');
     }
 }

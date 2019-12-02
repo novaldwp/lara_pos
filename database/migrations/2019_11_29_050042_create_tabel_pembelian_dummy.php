@@ -14,7 +14,11 @@ class CreateTabelPembelianDummy extends Migration
     public function up()
     {
         Schema::create('pembelian_dummy', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->bigIncrements('pembeliandummy_id');
+            $table->integer('produk_id');
+            $table->integer('pembelian_jumlah');
+            $table->integer('produk_beli');
+            $table->integer('subtotal');
             $table->timestamps();
         });
     }
