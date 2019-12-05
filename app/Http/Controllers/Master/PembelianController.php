@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use DB;
 use Session;
 use App\Pembelian;
+use App\PembelianDetail;
 use App\PembelianDummy;
 use App\Supplier;
 use App\Produk;
@@ -61,7 +62,47 @@ class PembelianController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $pembelian_kode = $request->input('pembelian_kode');
+        $supplier_id    = $request->input('supplier_id');
+
+        $fetch = PembelianDummy::orderBy('pembeliandummy_id', 'ASC')->get();
+
+        $pembelian                  = new Pembelian;
+        $pembelian->pembelian_kode  = $pembelian_kode;
+        $pembelian->supplier_id     = $supplier_id;
+        $pembelian->save();
+
+        $pembelian_id = $pembelian->pembelian_id;
+
+        foreach($fetch as $row) :
+            $pmbdetail = new PembelianDetail;
+            $pmbdetail->pembelian_id                = $pembelian_id;
+            $pmbdetail->produk_id                   = $row->produk_id;
+            $pmbdetail->detailpembelian_jumlah      = $row->pembelian_jumlah;
+            $pmbdetail->detailpembelian_subtotal    = $row->subtotal;
+
+            $count = Stok::where('produk_id', $row->produk_id)->count();
+
+            if($count > 0)
+            {
+                $stok               = Stok::where('produk_id', $row->produk_id)->firstOrFail();
+                $stok->stok_jumlah  = $stok->stok_jumlah + $row->pembelian_jumlah;
+                $stok->save();
+            }
+            else{
+                $stok = new Stok;
+                $stok->produk_id    = $row->produk_id;
+                $stok->stok_jumlah  = $row->pembelian_jumlah;
+                $stok->save();
+            }
+
+            $pmbdetail->save();
+
+        endforeach;
+
+        $this->deleteDummy();
+
+        return response()->json([ $success = 'Pembelian berhasil!' ]);
     }
 
     /**
@@ -164,8 +205,9 @@ class PembelianController extends Controller
         return response()->json("suksesssss");
     }
 
-    public function deleteDummy($id)
+    public function deleteDummy()
     {
+        $delete = PembelianDummy::truncate();
 
     }
 }

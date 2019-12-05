@@ -127,6 +127,19 @@
 <div class="tampil-detail">
 
 </div>
+
+<!-- Start of Bawah -->
+<div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+        <div class="box-header">
+            <button class="btn btn-success col-sm-12" name="confirm" id="confirm" url="{{ route('pembelian.store') }}">Simpan</button>
+        </div>
+      </div>
+    </div>
+</div>
+<!-- End of Bawah -->
+
 @include('admin.pembelian.search')
 @endsection
 
@@ -140,6 +153,7 @@ $(document).ready(function(){
         }
     });
 
+    delete_detail();
     tampil_detail();
 
     table = $("#data-table").DataTable({
@@ -187,6 +201,13 @@ $(document).ready(function(){
 
     function tampil_detail(){
         $('.tampil-detail').load('get_pembelian_detail');
+    }
+
+    function delete_detail(){
+        $.ajax({
+            url:'pembelian/delete_detail',
+            type:'POST'
+        })
     }
 
     $('#produk_kode').on('input', function(){
@@ -311,7 +332,55 @@ $(document).ready(function(){
                 }
             })
         }
+    });
 
+    $('#confirm').on('click', function(e){
+        e.preventDefault();
+        var pembelian_kode = $('#pembelian_kode').val(),
+            supplier_id    = $('#supplier_id').val();
+
+        swal({
+            title: "Konfirmasi",
+            text: "Apakah data sudah terisi dengan benar?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya!',
+            cancelButtonText: 'Tidak!',
+        }).then( (result) => {
+            if (result.value)
+            {
+                $.ajax({
+                    url:"{{ route('pembelian.index') }}",
+                    type:'POST',
+                    dataType:'JSON',
+                    data:{pembelian_kode:pembelian_kode, supplier_id:supplier_id},
+                    success:function(data)
+                    {
+                        swal({
+                            type: "success",
+                            text: data,
+                            timer: 2000,
+                            showConfirmButton: false,
+                            // onAfterClose: () => window.scrollTo(0,0) going to fix it later
+                        });
+
+                        tampil_detail();
+                        $('#pembelian_kode').val('');
+                        $('#supplier_id').val('');
+
+
+                    },
+                    error:function(xhr)
+                    {
+                        var res = xhr.responseTEXT;
+
+                        alert(res);
+                    }
+                });
+            }
+        })
     });
 
 });

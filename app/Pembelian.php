@@ -10,7 +10,7 @@ class Pembelian extends Model
     protected $table = "pembelian";
     protected $primaryKey = "pembelian_id";
     protected $fillable = [
-        'pembelian_kode',
+        'pembelian_kode', 'supplier_id'
 
     ];
 
@@ -25,10 +25,11 @@ class Pembelian extends Model
         if($count > 0)
         {
             // get last pembelian_kode value
-            $test = DB::table('pembelian')->whereYear('created_at', $year)->whereMonth('created_at', $month)->orderBy('pembelian_id', 'ASC')->get()->last()->pembelian_kode;
-            $take_year      = substr($test, 0, 4); //2019 taking a year string
-            $take_month     = substr($test, 4, 2); //11 taking a month string
-            $take_increment = substr($test, 6, 3); // 003 taking a increment string
+            $value_kode      = DB::table('pembelian')->whereYear('created_at', $year)->whereMonth('created_at', $month)->orderBy('pembelian_id', 'ASC')->get()->last()->pembelian_kode;
+            $take_numeric   = substr($value_kode, 3, 10); //2019110003 from PMB2019110003
+            $take_year      = substr($take_numeric, 0, 4); //2019 taking a year string
+            $take_month     = substr($take_numeric, 4, 2); //11 taking a month string
+            $take_increment = substr($take_numeric, 6, 3); // 003 taking a increment string
             // if looping config
             if($year == $take_year)
             {
@@ -36,7 +37,7 @@ class Pembelian extends Model
                 if($month == $take_month)
                 {
                     // do the "sum" between $test value and 1
-                    $pembelian_kode = $test + 1;
+                    $pembelian_kode = $take_numeric + 1;
                 }
                 else{
                     // if condition 2 fail then generate with same year different month with default value
