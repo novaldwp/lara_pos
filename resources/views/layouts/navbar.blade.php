@@ -47,7 +47,7 @@
     @case("pembelian")
         @php $sub_transaksi_pembelian = 'active' @endphp
         @break
-        @case("penjualan")
+    @case("penjualan")
         @php $sub_transaksi_penjualan = 'active' @endphp
         @break
 @endswitch
@@ -137,7 +137,7 @@
             </a>
             <ul class="treeview-menu">
                 <li class="{{ $sub_transaksi_penjualan }}">
-                    <a href="#">
+                    <a href="{{ route('penjualan.index') }}">
                         <i class="fa fa-circle-o"></i>
                         Penjualan
                     </a>

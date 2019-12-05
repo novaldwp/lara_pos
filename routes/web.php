@@ -19,6 +19,7 @@ Route::group(['middleware' => 'web', 'cekuser:1'], function(){
     Route::resource('member', 'Master\MemberController');
     Route::resource('stok', 'Master\StokController');
     Route::resource('pembelian', 'Master\PembelianController');
+    Route::resource('penjualan', 'PenjualanController');
 
     Route::post('member/get_id_member', 'Master\MemberController@get_id_member');
     Route::post('pembelian/get_pembelian_kode', 'Master\PembelianController@get_pembelian_kode');
