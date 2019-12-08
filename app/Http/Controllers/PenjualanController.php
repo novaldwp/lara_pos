@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Session;
+use App\Produk;
 
 class PenjualanController extends Controller
 {
@@ -12,6 +14,9 @@ class PenjualanController extends Controller
         Session::put('nav_active', 'transaksi');
         Session::put('sub_active', 'penjualan');
 
+        $produk = Produk::inRandomOrder()->limit(5)->get();
+
+        return view('penjualan.index', compact('produk'));
     }
 
     /**
@@ -79,4 +84,11 @@ class PenjualanController extends Controller
     {
         //
     }
+
+    public function get_penjualan_cart()
+    {
+
+    }
+
+
 }
