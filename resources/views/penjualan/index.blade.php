@@ -12,80 +12,73 @@
 @section('content')
 <!-- Start of Kiri -->
 <div class="row">
-  <div class="col-xs-5">
-    <div class="box">
-        <div class="box-body">
-        <!-- Content body-->
-            <div class="row">
-                <div class="col-xs-12" style="margin-left:0px">
-                    <div class="clearfix">
-                        <div class="input-group">
-                            <input type="text" class="form-control" name="produk_kode" id="produk_kode" placeholder="Scan Barcode disini..." aria-describedby="scan" autocomplete="off">
-                            <span class="input-group-addon blue" id="search" style="cursor: pointer"><span class="fa fa-search" title="Pencarian Barang"></span></span>
+    <div class="col-sm-12">
+        <div class="box">
+            <div class="box-header">
+                <div class="col-sm-6">
+                <!-- left column -->
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3">No. Penjualan :</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="penjualan_kode" name="penjualan_kode" value="" readonly>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3">Scan Barcode :</label>
+                        <div class="col-sm-9">
+                            <input type="text" placeholder="Scan Barcode disini.." class="form-control" id="produk_kode" name="produk_kode">
+                        </div>
+                    </div>
+                </form>
+                <!-- end of left column -->
+                </div>
+                <div class="col-sm-6">
+                <!-- right column -->
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4">ID Member :</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="member_id" name="member_id">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4">Nama Member :</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="member_name" name="member_name" readonly>
+                        </div>
+                    </div>
+                </form>
+                <!-- end of right column -->
                 </div>
             </div>
-
-            <table class="table table-responsive table-hover table-striped" id="table-produk" name="table-produk">
-                <thead>
-                    <tr>
-                        <th width="30">No</th>
-                        <th>Kode Produk</th>
-                        <th>Nama Produk</th>
-                        <th>Harga</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @php $i = 1; @endphp
-                    @foreach($produk as $row)
-                    <tr>
-                        <td>{{ $i }}</td>
-                        <td>{{ $row->produk_kode }}</td>
-                        <td>{{ $row->produk_nama }}</td>
-                        <td>{{ $row->produk_jual }}</td>
-                        <td>
-                            <a href"#" class="btn btn-success" id="add-item" name="add-item" produk-id="{{ $row->produk_id }}">
-                                <i class="fa fa-plus"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    @php $i++; @endphp
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-        <!-- End of Content body-->
-    </div>
-  </div>
-<!-- End of Kiri-->
-
-<!-- Start of Kanan -->
-    <div class="col-xs-7">
-        <div class="box">
             <div class="box-body">
             <!-- Content body-->
+                <div class="col-sm-12">
+                    <hr>
+                    <table class="table table-responsive table-hover table-striped" id="detail-penjualan" name="detail-penjualan">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Kode Produk</th>
+                                <th>Nama Produk</th>
+                                <th>Harga</th>
+                                <th class="text-center" width="20%">Qty</th>
+                                <th class="text-center">Subtotal</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="detail-cart">
 
-                <table class="table table-responsive table-hover table-striped" id="detail-produk" name="detail-produk">
-                    <thead>
-                        <tr>
-                            <th width="">No</th>
-                            <th>Nama Produk</th>
-                            <th>Qty</th>
-                            <th>Subtotal</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody id="detail-cart">
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
+
             </div>
             <!-- End of Content body-->
         </div>
     </div>
-    </div>
-    <!-- End of Kanan-->
+</div>
 @endsection
 
 @section('script')
@@ -97,6 +90,8 @@ $(document).ready(function(){
           'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
         }
     });
+
+    get_penjualan_cart();
 
     $('#produk_kode').focus();
 
@@ -142,6 +137,33 @@ $(document).ready(function(){
                 }
               }
             });
+
+    function get_penjualan_cart(){
+        $('#detail-cart').load('get_penjualan_cart');
+    }
+
+    $('body').on('keyup', '#produk_kode', function(e){
+        var keycode = (e.keyCode ? e.keyCode :  e.which);
+        var kode = $('#produk_kode').val();
+
+            if(kode.length == 7)
+            {
+                $.ajax({
+                    url:'produk/insert_penjualan_cart',
+                    type:'POST',
+                    dataType:'JSON',
+                    data:{kode:kode},
+                    success:function(res)
+                    {
+                        get_penjualan_cart();
+                        $('#produk_kode').val("");
+                        $('#produk_kode').focus();
+                    }
+                })
+            }
+
+    })
+
 
 });
 </script>

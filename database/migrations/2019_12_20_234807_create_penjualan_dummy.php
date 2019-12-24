@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTablePenjualan extends Migration
+class CreatePenjualanDummy extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateTablePenjualan extends Migration
      */
     public function up()
     {
-        Schema::create('penjualan', function (Blueprint $table) {
-            $table->bigIncrements('penjualan_id');
-            $table->string('penjualan_kode');
-            $table->integer('penjualan_total');
-            $table->integer('penjualan_nominal');
-            $table->integer('penjualan_kembalian');
+        Schema::create('penjualan_dummy', function (Blueprint $table) {
+            $table->bigIncrements('dummy_id');
+            $table->integer('dummy_qty');
+            $table->integer('dummy_harga');
+            $table->integer('dummy_subtotal');
+            $table->integer('produk_id');
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ class CreateTablePenjualan extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('penjualan');
+        Schema::dropIfExists('penjualan_dummy');
     }
 }

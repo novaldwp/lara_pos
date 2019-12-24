@@ -59,6 +59,7 @@
                     <input type="text" class="form-control" id="pembelian_jumlah" name="pembelian_jumlah">
                 </div>
             </div>
+
             <div class="form-group">
                 <div class="col-sm-offset-4 col-sm-8">
                     <button class="btn btn-success col-sm-12" id="tambah" name="tambah">Tambah</button>

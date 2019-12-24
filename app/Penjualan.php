@@ -10,6 +10,6 @@ class Penjualan extends Model
     protected $primaryKey = "penjualan_id";
 
     protected $fillable = [
-        'penjualan_kode', 'is_payed', 'user_id'
+        'penjualan_kode', 'penjualan_total', 'penjualan_nominal', 'penjualan_kembalian', 'member_id'
     ];
 }

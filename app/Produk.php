@@ -43,4 +43,11 @@ class Produk extends Model
     public function pembeliandummy(){
         return $this->hasOne(PembelianDummy::class, 'produk_id');
     }
+
+    public function penjualandummy(){
+        return $this->hasOne(PenjualanDummy::class, 'produk_id');
+    }
+
+
+
 }
