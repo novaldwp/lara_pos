@@ -143,7 +143,6 @@ $(document).ready(function(){
     }
 
     $('body').on('keyup', '#produk_kode', function(e){
-        var keycode = (e.keyCode ? e.keyCode :  e.which);
         var kode = $('#produk_kode').val();
 
             if(kode.length == 7)
@@ -164,6 +163,52 @@ $(document).ready(function(){
 
     })
 
+    $('body').on('click', '#qty-plus', function(e){
+        e.preventDefault();
+        var me = $(this),
+            id = me.attr('produk-id');
+
+        $.ajax({
+            url: 'produk/'+id+'/plus_penjualan_cart',
+            type: 'GET',
+            dataType: 'JSON',
+            success:function()
+            {
+                get_penjualan_cart();
+            }
+        })
+
+    })
+
+    $('body').on('click', '#qty-minus', function(e){
+        e.preventDefault();
+        var me = $(this),
+            id = me.attr('produk-id');
+
+        $.ajax({
+            url: 'produk/'+id+'/minus_penjualan_cart',
+            type: 'GET',
+            dataType: 'JSON',
+            success:function()
+            {
+                get_penjualan_cart();
+            }
+        })
+
+    })
+
+    $('body').on('keypress', '#qty-enter', function(e){
+        var me      = $(this),
+            id      = me.attr('produk-id'),
+            val     = me.val();
+            keycode = (e.keyCode ? e.keyCode :  e.which);
+
+        if(keycode == 13)
+        {
+            alert("ini enter");
+        }
+
+    })
 
 });
 </script>

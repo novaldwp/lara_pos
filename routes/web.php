@@ -29,6 +29,10 @@ Route::group(['middleware' => 'web', 'cekuser:1'], function(){
     Route::get('get_pembelian_detail', 'Master\PembelianController@get_pembelian_detail');
     Route::get('get_penjualan_cart', 'PenjualanController@get_penjualan_cart');
 
+    Route::get('produk/{id}/minus_penjualan_cart', 'PenjualanController@minus_penjualan_cart');
+    Route::get('produk/{id}/plus_penjualan_cart', 'PenjualanController@plus_penjualan_cart');
+    Route::post('produk/enter_penjualan_cart', 'PenjualanController@enter_penjualan_cart');
+
     Route::get('pembelian/get_produk_by_kode/{kode}', 'Master\PembelianController@get_produk_by_kode');
     Route::post('produk/get_produk_kode', 'Master\ProdukController@get_produk_kode');
 

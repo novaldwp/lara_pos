@@ -136,12 +136,52 @@ class PenjualanController extends Controller
 
     public function plus_penjualan_cart($id)
     {
+        $adummy = PenjualanDummy::where('produk_id', $id);
+
+        if($adummy->count() != 0)
+        {
+            $adummy = $adummy->first();
+            $adummy->dummy_qty = $adummy->dummy_qty + 1;
+            $adummy->dummy_subtotal = $adummy->dummy_qty * $adummy->dummy_harga;
+            $adummy->save();
+
+            return response()->json(['message' => "Successfully renew qty."], 200);
+        }
 
     }
 
     public function minus_penjualan_cart($id)
     {
+        $adummy = PenjualanDummy::where('produk_id', $id);
+
+        if($adummy->count() != 0)
+        {
+            $adummy = $adummy->first();
+            $adummy->dummy_qty = $adummy->dummy_qty - 1;
+            $adummy->dummy_subtotal = $adummy->dummy_qty * $adummy->dummy_harga;
+            $adummy->save();
+
+            return response()->json(['message' => "Successfully renew qty."], 200);
+        }
 
     }
+
+    public function enter_penjualan_cart(Request $request, $id){
+
+        $qty    = $request->input('qty');
+        $adummy = PenjualanDummy::where('produk_id', $id);
+
+        if($adummy->count() != 0)
+        {
+
+        }
+    }
+
+
+
+
+
+
+
 
 }
