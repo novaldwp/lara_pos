@@ -9,8 +9,12 @@ Route::get('/test', 'Master\StokController@test');
 // auth with disabble register, reset password and forgot password
 Auth::routes(['register' => false, 'reset' => false, 'request' => false]);
 
+Route::group(['middleware' => 'web'], function(){
+
+});
+
 // route yang hanya bisa diakses oleh user role 1 => 'admin'
-Route::group(['middleware' => 'web', 'cekuser:1'], function(){
+Route::group(['middleware' => ['web', 'cekuser:1']], function(){
 
     Route::resource('kategori', 'Master\KategoriController');
     Route::resource('supplier', 'Master\SupplierController');
