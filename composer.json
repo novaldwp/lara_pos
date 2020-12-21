@@ -41,7 +41,7 @@
         },
         "files": [
             "app/Helpers/TanggalIndonesia.php",
-            "app/Helpers/FormatUang.php",
+            "app/Helpers/ConvertRupiah.php",
             "app/Helpers/AngkaTerbilang.php"
         ],
         "classmap": [

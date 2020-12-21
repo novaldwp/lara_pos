@@ -1,11 +1,12 @@
 @extends('layouts.app')
 
 @section('title')
-  Daftar Kategori
+  Daftar Data Kategori
 @endsection
 
 @section('breadcrumb')
    @parent
+   <li>Master</li>
    <li>Kategori</li>
 @endsection
 
@@ -20,9 +21,9 @@
         <table class="table table-responsive table-hover table-striped" id="data-table">
           <thead>
             <tr>
-                <th width="30">No</th>
+                <th width="5%">No</th>
                 <th>Nama Kategori</th>
-                <th>Aksi</th>
+                <th width="15%">Aksi</th>
             </tr>
           </thead>
         </table>

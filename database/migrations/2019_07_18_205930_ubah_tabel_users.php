@@ -14,8 +14,10 @@ class UbahTabelUsers extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
+            $table->string('phone');
+            $table->string('birthdate');
             $table->string('photo', 100)->nullable();
-            $table->integer('level')->unsigned()->default(2);
+            $table->enum('level',['2', '1']);
         });
     }
 

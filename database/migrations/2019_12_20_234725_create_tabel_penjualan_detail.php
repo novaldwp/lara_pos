@@ -14,12 +14,14 @@ class CreateTabelPenjualanDetail extends Migration
     public function up()
     {
         Schema::create('penjualan_detail', function (Blueprint $table) {
-            $table->bigIncrements('detail_id');
-            $table->integer('detail_qty');
-            $table->integer('detail_harga');
-            $table->integer('detail_subtotal');
-            $table->integer('penjualan_id');
-            $table->integer('produk_id');
+            $table->bigIncrements('detailpenjualan_id');
+            $table->integer('detailpenjualan_qty');
+            $table->integer('detailpenjualan_harga');
+            $table->integer('detailpenjualan_subtotal');
+            $table->bigInteger('penjualan_id')->unsigned()->nullable();
+            $table->bigInteger('produk_id')->unsigned()->nullable();
+            $table->foreign('penjualan_id')->references('penjualan_id')->on('penjualan')->onDelete('set null')->onUpdate('cascade');
+            $table->foreign('produk_id')->references('produk_id')->on('produk')->onDelete('set null')->onUpdate('cascade');
             $table->timestamps();
         });
     }

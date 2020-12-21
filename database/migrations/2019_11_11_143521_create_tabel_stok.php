@@ -16,8 +16,8 @@ class CreateTabelStok extends Migration
         Schema::create('stok', function (Blueprint $table) {
             $table->bigIncrements('stok_id');
             $table->integer('stok_jumlah');
-            $table->string('stok_status');
-            $table->string('produk_id');
+            $table->bigInteger('produk_id')->unsigned()->nullable();
+            $table->foreign('produk_id')->references('produk_id')->on('produk')->onDelete('set null')->onUpdate('cascade');
             $table->timestamps();
         });
     }

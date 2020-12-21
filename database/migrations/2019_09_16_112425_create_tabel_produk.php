@@ -19,8 +19,9 @@ class CreateTabelProduk extends Migration
             $table->string('produk_nama');
             $table->integer('produk_beli');
             $table->integer('produk_jual');
-            $table->string('produk_gambar');
-            $table->integer('kategori_id')->nullable();
+            $table->string('produk_image');
+            $table->bigInteger('kategori_id')->unsigned()->nullable();
+            $table->foreign('kategori_id')->references('kategori_id')->on('kategori')->onDelete('set null')->onUpdate('cascade');
             $table->timestamps();
         });
     }

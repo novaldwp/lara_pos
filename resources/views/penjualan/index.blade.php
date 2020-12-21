@@ -14,76 +14,34 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="box">
-            <div class="box-header">
-                <div class="col-sm-6">
-                <!-- left column -->
-                <form class="form-horizontal">
-                    <div class="form-group">
-                        <label class="control-label col-sm-3">No. Penjualan :</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="penjualan_kode" name="penjualan_kode" value="" readonly>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-3">Scan Barcode :</label>
-                        <div class="col-sm-9">
-                            <input type="text" placeholder="Scan Barcode disini.." class="form-control" id="produk_kode" name="produk_kode">
-                        </div>
-                    </div>
-                </form>
-                <!-- end of left column -->
-                </div>
-                <div class="col-sm-6">
-                <!-- right column -->
-                <form class="form-horizontal">
-                    <div class="form-group">
-                        <label class="control-label col-sm-4">ID Member :</label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="member_id" name="member_id">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-4">Nama Member :</label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="member_name" name="member_name" readonly>
-                        </div>
-                    </div>
-                </form>
-                <!-- end of right column -->
-                </div>
-            </div>
             <div class="box-body">
             <!-- Content body-->
-                <div class="col-sm-12">
-                    <hr>
-                    <table class="table table-responsive table-hover table-striped" id="detail-penjualan" name="detail-penjualan">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Kode Produk</th>
-                                <th>Nama Produk</th>
-                                <th>Harga</th>
-                                <th class="text-center" width="20%">Qty</th>
-                                <th class="text-center">Subtotal</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody id="detail-cart">
-
-                        </tbody>
-                    </table>
+            <div class="col-sm-6">
+                <!-- left column -->
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Scan Barcode [Ctrl+Q] :</label>
+                            <div class="col-sm-8">
+                                <input type="text" placeholder="Scan Barcode disini.." class="form-control" id="produk_kode" name="produk_kode">
+                            </div>
+                        </div>
+                    </form>
+                <!-- end of left column -->
                 </div>
+                <div class="col-sm-12" id="detail-cart">
 
+                </div>
             </div>
             <!-- End of Content body-->
         </div>
     </div>
 </div>
+
 @endsection
 
 @section('script')
 <script>
-$(document).ready(function(){
+$('document').ready(function(){
 
     $.ajaxSetup({
         headers: {
@@ -91,75 +49,65 @@ $(document).ready(function(){
         }
     });
 
-    get_penjualan_cart();
-
     $('#produk_kode').focus();
-
-    table = $("#data-table").DataTable({
-              responsive: true,
-              processing : true,
-              serverSide : true,
-              ajax: {
-                url: "{{ route('pembelian.index') }}",
-              },
-              columns: [
-                {
-                  data: 'DT_RowIndex',
-                  name: 'DT_RowIndex'
-                },
-                {
-                  data: 'produk_kode',
-                  name: 'produk_kode'
-                },
-                {
-                  data: 'produk_nama',
-                  name: 'produk_nama'
-                },
-                {
-                  data: 'produk_beli',
-                  name: 'produk_beli'
-                },
-                {
-                  data: 'action',
-                  name: 'action',
-                  orderable: false,
-                  searchable: false
-                }
-              ],
-              "oLanguage" : {
-                "sSearch" : "Pencarian",
-                "oPaginate" : {
-                  "sNext" : "Berikutnya",
-                  "sPrevious" : "Sebelumnya",
-                  "sFirst" : "Awal",
-                  "sLast" : "Akhir",
-                  "sEmptyTable" : "Data tidak ditemukan!"
-                }
-              }
-            });
+    clear_penjualan_cart()
 
     function get_penjualan_cart(){
         $('#detail-cart').load('get_penjualan_cart');
+        $('#detail-cart').show();
     }
 
-    $('body').on('keyup', '#produk_kode', function(e){
+    function clear_penjualan_cart(){
+        $.ajax({
+            url: 'produk/clear_penjualan_cart',
+            type: 'POST'
+        })
+    }
+
+    function payment_modal(){
+        $('#penjualanModal').modal('show');
+    }
+
+    $('body').on('keyup', '#produk_kode', function(){
         var kode = $('#produk_kode').val();
 
-            if(kode.length == 7)
-            {
-                $.ajax({
-                    url:'produk/insert_penjualan_cart',
-                    type:'POST',
-                    dataType:'JSON',
-                    data:{kode:kode},
-                    success:function(res)
-                    {
-                        get_penjualan_cart();
-                        $('#produk_kode').val("");
-                        $('#produk_kode').focus();
-                    }
-                })
-            }
+        if(kode.length == 7)
+        {
+            $('#produk_kode').val("");
+            $.ajax({
+                url:'produk/insert_penjualan_cart',
+                type:'POST',
+                dataType:'JSON',
+                data:{kode:kode},
+                success:function(res)
+                {
+                    get_penjualan_cart();
+                    $('#produk_kode').focus();
+                }
+            })
+
+        }
+    })
+
+    $('body').on('keyup', '#member_kode', function(){
+        var member_kode = $('#member_kode').val();
+
+        if(member_kode.length == 9)
+        {
+            $.ajax({
+                url:'member/get-member-by-kode/'+member_kode,
+                type: 'GET',
+                dataType: 'JSON',
+                success:function(res)
+                {
+                    $('#member_nama').val(res);
+                }
+            })
+        }
+        else{
+            $('#member_nama').val('Umum');
+        }
+
 
     })
 
@@ -197,19 +145,155 @@ $(document).ready(function(){
 
     })
 
-    $('body').on('keypress', '#qty-enter', function(e){
+    $('body').on('keypress', 'input[name="qty-enter"]', function(e){
         var me      = $(this),
             id      = me.attr('produk-id'),
-            val     = me.val();
+            stok    = parseInt(me.attr('produk-stok')),
+            qty     = parseInt(me.val());
             keycode = (e.keyCode ? e.keyCode :  e.which);
 
         if(keycode == 13)
         {
-            alert("ini enter");
+            if(qty > stok)
+            {
+                swal({
+                    type: "warning",
+                    title: "Warning!",
+                    text: "Quantity exceeds the available stock limit",
+                    timer: 2000,
+                    showConfirmButton: false
+                })
+
+                me.val(stok);
+            }
+            else{
+                $.ajax({
+                    url:'produk/'+id+'/enter_penjualan_cart',
+                    type:'GET',
+                    dataType:'JSON',
+                    data:{qty:qty},
+                    success:function()
+                    {
+                        get_penjualan_cart();
+                        $('#produk_kode').focus();
+                    }
+                })
+            }
         }
 
     })
 
+    shortcut.add("Ctrl+Q", function(){
+        $('#produk_kode').focus();
+    });
+
+    shortcut.add("F2", function(){
+        $.ajax({
+            url: 'produk/clear_penjualan_cart',
+            type: 'POST',
+            success:function(res)
+            {
+                $('#detail-cart').hide();
+            }
+        })
+    });
+
+    shortcut.add("F4", function(){
+        payment_modal();
+    });
+
+    shortcut.add("F6", function(){
+        $('#member_kode').focus();
+    });
+
+    shortcut.add("F7", function(){
+        $('#uang_bayar').focus();
+    });
+
+    shortcut.add("F8", function(){
+        var gtotal = $('#grand_total').val();
+        $('#uang_bayar').val(gtotal);
+    })
+
+    $('body').on('click', '#pay', function(e){
+        e.preventDefault();
+        payment_modal();
+    });
+
+    $('body').on('click', '#save', function(e){
+
+        var uang_bayar = convertToAngka($('#uang_bayar').val()),
+            gtotal     = convertToAngka($('#grand_total').val()),
+
+            uang_bayar = uang_bayar ? uang_bayar:0;
+
+        if(uang_bayar == 0)
+        {
+            swal({
+                type: "warning",
+                title: "Warning!",
+                text: "The payment amount cannot be empty!",
+                timer: 2000,
+                showConfirmButton: false
+            })
+            .then(function(){
+                setTimeout(function(){
+                    $('#uang_bayar').trigger('focus');
+                }, 300);
+            })
+        }
+        else if(gtotal > uang_bayar)
+        {
+            swal({
+                type: "error",
+                title: "Error!",
+                text: "The payment amount cannot be less than grand total!",
+                timer: 2000,
+                showConfirmButton: false
+            })
+        }
+        else{
+            $(this).attr('disabled', true);
+            var no_penjualan = $('#no_penjualan').val(),
+                grand_total  = convertToAngka($('#grand_total').val()),
+                uang_bayar   = convertToAngka($('#uang_bayar').val()),
+                kembalian    = convertToAngka($('#kembalian').val()),
+                cashier_id   = $('#cashier_name').attr('cashier-id');
+                id_member    = $('#id_member').val(),
+                id_member    = id_member ? id_member : 0;
+
+            $.ajax({
+                url: 'produk/insert-penjualan-data',
+                type: 'POST',
+                dataType: 'JSON',
+                data: {
+                    no_penjualan:no_penjualan, grand_total:grand_total, uang_bayar:uang_bayar,
+                    kembalian:kembalian, cashier_id:cashier_id, id_member:id_member
+                },
+                success:function(res)
+                {
+                    $(this).removeAttr('disabled');
+                    get_penjualan_cart();
+                    $('#penjualanModal').modal('hide');
+                    swal({
+                        type: "success",
+                        title: "Success!",
+                        text: "The payment is successfully complete!",
+                        timer: 2000,
+                        showConfirmButton: false
+                    })
+                    .then(function(){
+                        $('#no_penjualan').val('');
+                        $('#grand_total').val('');
+                        $('#uang_bayar').val('');
+                        $('#kembalian').val('');
+                        $('#id_member').val('');
+
+                    })
+                }
+            })
+        }
+    });
 });
 </script>
 @endsection

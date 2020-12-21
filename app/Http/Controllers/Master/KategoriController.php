@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use Validator;
 use Alert;
 use Session;
-use App\Kategori;
+use App\Models\Master\Kategori;
 
 class KategoriController extends Controller
 {

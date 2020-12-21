@@ -1,11 +1,12 @@
 @extends('layouts.app')
 
 @section('title')
-  Daftar Supplier
+  Daftar Data Supplier
 @endsection
 
 @section('breadcrumb')
    @parent
+   <li>Master</li>
    <li>Supplier</li>
 @endsection
 

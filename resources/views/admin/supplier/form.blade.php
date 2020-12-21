@@ -19,14 +19,6 @@
                                 </div>
                                 <div class="form-group">
                                       <label class="control-label col-md-4">
-                                            Alamat Supplier:
-                                      </label>
-                                      <div class="col-md-8">
-                                            <textarea name="supplier_alamat" id="supplier_alamat" class="form-control" cols="58" rows="3" autocomplete="off"></textarea>
-                                        </div>
-                                </div>
-                                <div class="form-group">
-                                      <label class="control-label col-md-4">
                                             Kontak Supplier:
                                       </label>
                                       <div class="col-md-8">
@@ -40,6 +32,14 @@
                                       <div class="col-md-8">
                                             <input type="text" name="supplier_telpon" id="supplier_telpon" class="form-control" autocomplete="off">
                                       </div>
+                                </div>
+                                <div class="form-group">
+                                      <label class="control-label col-md-4">
+                                            Alamat Supplier:
+                                      </label>
+                                      <div class="col-md-8">
+                                            <textarea name="supplier_alamat" id="supplier_alamat" class="form-control" cols="58" rows="3" autocomplete="off"></textarea>
+                                        </div>
                                 </div>
                                 <div class="hidden">
                                       <input type="hidden" name="supplier_id" id="supplier_id">

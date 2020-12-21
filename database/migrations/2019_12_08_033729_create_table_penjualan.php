@@ -19,6 +19,10 @@ class CreateTablePenjualan extends Migration
             $table->integer('penjualan_total');
             $table->integer('penjualan_nominal');
             $table->integer('penjualan_kembalian');
+            $table->bigInteger('member_id')->unsigned()->nullable();
+            $table->bigInteger('user_id')->unsigned()->nullable();
+            $table->foreign('member_id')->references('member_id')->on('member')->onDelete('set null')->onUpdate('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null')->onUpdate('cascade');
             $table->timestamps();
         });
     }

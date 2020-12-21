@@ -18,7 +18,7 @@ class ProdukTableSeeder extends Seeder
                     'produk_nama' => 'Indomie Goreng',
                     'produk_beli' => 2200,
                     'produk_jual' => 2500,
-                    'produk_gambar' => 'no_image.png',
+                    'produk_image' => 'no_image.png',
                     'kategori_id' => 1
                 ],
                 [
@@ -26,7 +26,7 @@ class ProdukTableSeeder extends Seeder
                     'produk_nama' => 'Indomie Sedap',
                     'produk_beli' => 2150,
                     'produk_jual' => 2500,
-                    'produk_gambar' => 'no_image.png',
+                    'produk_image' => 'no_image.png',
                     'kategori_id' => 1
                 ],
                 [
@@ -34,7 +34,7 @@ class ProdukTableSeeder extends Seeder
                     'produk_nama' => 'Odol Pepsodent',
                     'produk_beli' => 2300,
                     'produk_jual' => 3000,
-                    'produk_gambar' => 'no_image.png',
+                    'produk_image' => 'no_image.png',
                     'kategori_id' => 2
                 ],
             )

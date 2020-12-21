@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
 @section('title')
-  Daftar Kategori
+  Daftar Stok Produk
 @endsection
 
 @section('breadcrumb')
    @parent
-   <li>Kategori</li>
+   <li>Stok</li>
 @endsection
 
 @section('content')
@@ -14,18 +14,16 @@
   <div class="col-xs-12">
     <div class="box">
       <div class="box-header">
-        <a href="javascript:void(0);" id="modal_button" name="modal_button" class="btn btn-success"><i class="fa fa-plus-circle"></i> Tambah</a>
+        <!-- ini di kosongin dulu sengaja-->
       </div>
       <div class="box-body">
         <table class="table table-responsive table-hover table-striped" id="data-table">
           <thead>
             <tr>
-                <th width="30">No</th>
+                <th width="5%">No</th>
                 <th>Kode Produk</th>
                 <th>Nama Produk</th>
                 <th>Stok Produk</th>
-                <th>Status</th>
-                <th>Aksi</th>
             </tr>
           </thead>
         </table>
@@ -34,7 +32,6 @@
   </div>
 </div>
 
-@include('admin.stok.form')
 @endsection
 
 @section('script')
@@ -70,16 +67,6 @@ $(document).ready(function(){
                 {
                   data: 'stok_jumlah',
                   name: 'stok_jumlah'
-                },
-                {
-                  data: 'stok_status',
-                  name: 'stok_status'
-                },
-                {
-                  data: 'action',
-                  name: 'action',
-                  orderable: false,
-                  searchable: false
                 }
               ],
               "oLanguage" : {
@@ -91,7 +78,9 @@ $(document).ready(function(){
                   "sLast" : "Akhir",
                   "sEmptyTable" : "Data tidak ditemukan!"
                 }
-              }
+              },
+              "info": false,
+              "bLengthChange": false
             });
 
     $('body').on('click', '#modal_button', function(e){

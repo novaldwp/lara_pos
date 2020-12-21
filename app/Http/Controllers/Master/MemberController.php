@@ -180,4 +180,18 @@ class MemberController extends Controller
 
         return response()->json($member_id);
     }
+
+    public function get_member_by_kode($member_kode) {
+
+        $value = Member::where('member_kode', $member_kode)->get();
+        if($value->count() != 0)
+        {
+            foreach($value as $row) {
+                $value = $row->member_nama;
+            }
+        }else{
+            $value = "Umum";
+        }
+        return response()->json($value);
+    }
 }

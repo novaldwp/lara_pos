@@ -9,6 +9,7 @@ use Session;
 use App\Stok;
 use App\Produk;
 use App\PembelianDummy;
+use App\PenjualanDummy;
 use App\Kategori;
 
 class StokController extends Controller
@@ -119,7 +120,7 @@ class StokController extends Controller
     {
         // $id = 1;
         // $stok = Produk::with(['stok'])->where('produk_id', $id)->get();
-        $pdummy = PembelianDummy::with(['produk'])->orderBy('pembeliandummy_id', 'DESC')->get();
+        $pdummy = PenjualanDummy::with(['produk', 'produk.stok'])->orderBy('dummy_id', 'DESC')->get();
         return response()->json(['data' => $pdummy]);
     }
 }

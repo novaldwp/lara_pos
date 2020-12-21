@@ -43,7 +43,7 @@
                                 </div>
                                 <div class="form-group">
                                       <label class="control-label col-md-4">
-                                            Kategori Barang:
+                                            Kategori:
                                       </label>
                                       <div class="col-md-8">
                                             <select name="kategori_id" id="kategori_id" class="form-control">
@@ -56,7 +56,7 @@
                                 </div>
                                 <div class="form-group">
                                       <label class="control-label col-md-4">
-                                            Gambar Produk:
+                                            Gambar:
                                       </label>
                                       <div class="col-md-8">
                                             <div class="image-edit">

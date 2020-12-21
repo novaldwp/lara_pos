@@ -25,8 +25,8 @@ class Pembelian extends Model
         if($count > 0)
         {
             // get last pembelian_kode value
-            $value_kode      = DB::table('pembelian')->whereYear('created_at', $year)->whereMonth('created_at', $month)->orderBy('pembelian_id', 'ASC')->get()->last()->pembelian_kode;
-            $take_numeric   = substr($value_kode, 3, 10); //2019110003 from PMB2019110003
+            $value          = DB::table('pembelian')->select('pembelian_kode')->whereYear('created_at', $year)->whereMonth('created_at', $month)->orderBy('pembelian_id', 'ASC')->get()->last();
+            $take_numeric   = substr($value, 3, 10); //2019110003 from PMB2019110003
             $take_year      = substr($take_numeric, 0, 4); //2019 taking a year string
             $take_month     = substr($take_numeric, 4, 2); //11 taking a month string
             $take_increment = substr($take_numeric, 6, 3); // 003 taking a increment string

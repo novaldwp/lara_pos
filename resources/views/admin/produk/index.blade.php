@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-  Daftar Produk
+  Daftar Data Produk
 @endsection
 
 @section('breadcrumb')
