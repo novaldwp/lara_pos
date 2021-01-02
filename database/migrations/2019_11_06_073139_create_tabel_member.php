@@ -15,7 +15,7 @@ class CreateTabelMember extends Migration
     {
         Schema::create('member', function (Blueprint $table) {
             $table->bigIncrements('member_id');
-            $table->integer('member_kode');
+            $table->string('member_kode');
             $table->string('member_nama');
             $table->string('member_phone');
             $table->string('member_alamat');

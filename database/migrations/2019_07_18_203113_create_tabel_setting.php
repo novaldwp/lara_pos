@@ -15,13 +15,10 @@ class CreateTabelSetting extends Migration
     {
         Schema::create('setting', function (Blueprint $table) {
             $table->bigIncrements('setting_id');
-            $table->string('nama_perusahaan', 100);
-            $table->text('alamat');
-            $table->string('telepon', 20);
-            $table->string('logo', 50);
-            $table->string('kartu_member', 50);
-            $table->integer('diskon_member')->unsigned();
-            $table->integer('tipe_nota')->unsigned();
+            $table->string('setting_nama', 100);
+            $table->text('setting_alamat');
+            $table->string('setting_phone', 20);
+            $table->string('setting_image');
             $table->timestamps();
         });
     }

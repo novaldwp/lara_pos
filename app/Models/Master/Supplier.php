@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models\Master;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,7 +14,7 @@ class Supplier extends Model
         'supplier_nama',
         'supplier_alamat',
         'supplier_kontak',
-        'supplier_telpon',
+        'supplier_phone',
         'supplier_website'
     ];
 

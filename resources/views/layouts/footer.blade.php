@@ -203,9 +203,18 @@
 <!-- ./wrapper -->
 
 <!-- jQuery 3 -->
-<script src="{{ asset('adminLTE/bower_components/jquery/dist/jquery.min.js') }}"></script>
+<script src="{{ asset('adminLTE/bower_components/jquery/dist/jquery.min.js') }}" type="text/javascript"></script>
+{{-- jquery form validation --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/additional-methods.min.js"></script>
+{{-- medium-zoom js --}}
+<script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script>
 <!-- Rupiah Converter Js -->
 <script src="{{ asset('js/convertrupiah.js') }}"></script>
+<!-- lightbox -->
+<script src="{{ asset('lightbox2/src/js/lightbox.js') }}"></script>
+<!-- select2 -->
+<script src="{{ asset('select2/dist/js/select2.min.js') }}"></script>
 <!-- JQuery Hotkey -->
 <script src="{{ asset('js/shortcut.js') }}"></script>
 <!-- Input mask igorescobar-->
@@ -242,7 +251,6 @@
 <script src="{{ asset('adminLTE/dist/js/adminlte.min.js') }}"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="{{ asset('adminLTE/dist/js/demo.js') }}"></script>
-
 @yield('script')
 
 </body>

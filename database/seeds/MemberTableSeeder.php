@@ -15,9 +15,9 @@ class MemberTableSeeder extends Seeder
         DB::table('member')->insert(array(
             [
                 'member_kode'       => '1911001',
-                'member_nama'       => 'Jaenudin',
-                'member_phone'      => '085218292958',
-                'member_alamat'     => 'Jl. Kebon Sirih'
+                'member_nama'       => 'Umum',
+                'member_phone'      => '00',
+                'member_alamat'     => ''
             ],
             [
                 'member_kode'       => '1911002',

@@ -1,9 +1,12 @@
 <?php
 
-namespace App;
+namespace App\Models\Master;
 
 use Illuminate\Database\Eloquent\Model;
 use DB;
+
+use App\Models\Main\Stok;
+use App\Models\Transaction\Penjualandetail;
 
 class Produk extends Model
 {
@@ -15,22 +18,9 @@ class Produk extends Model
         'produk_nama',
         'produk_beli',
         'produk_jual',
-        'produk_gambar',
+        'produk_image',
         'kategori_id',
     ];
-
-    public static function generate_produk_kode(){
-
-        $stok       = DB::table('produk')->orderBy('produk_id', 'DESC')->select('produk_kode')->first();
-
-        $kode       = $stok->produk_kode;
-        $increment  = sprintf("%03s",substr($kode, 4, 3) + 1 );
-        $alphabet   = substr($kode, 0, 4);
-
-        $new_kode   = $alphabet.$increment;
-
-        return $new_kode;
-    }
 
     public function kategori(){
         return $this->belongsTo(Kategori::class, 'kategori_id');
@@ -38,6 +28,11 @@ class Produk extends Model
 
     public function stok(){
         return $this->hasOne(Stok::class, 'produk_id');
+    }
+
+    public function penjualandetail()
+    {
+        return $this->hasMany(Penjualandetail::class, 'produk_id');
     }
 
     public function pembeliandummy(){

@@ -2,45 +2,63 @@
 use App\PembelianDummy;
 
 
-Route::get('/', 'HomeController@index')->name('home');
-
-Route::get('/test', 'Master\StokController@test');
-
 // auth with disabble register, reset password and forgot password
 Auth::routes(['register' => false, 'reset' => false, 'request' => false]);
-
 
 // route yang hanya bisa diakses oleh user role 1 => 'admin'
 Route::group(['middleware' => ['auth', 'web', 'cekuser:1']], function(){
 
-    Route::resource('kategori', 'Master\KategoriController');
-    Route::resource('supplier', 'Master\SupplierController');
-    Route::resource('produk', 'Master\ProdukController');
-    Route::resource('user', 'Master\UserController');
-    Route::resource('member', 'Master\MemberController');
-    Route::resource('stok', 'Master\StokController');
-    Route::resource('pembelian', 'Master\PembelianController');
-    Route::resource('penjualan', 'PenjualanController');
+    Route::get('/', 'Main\DashboardController@index')->name('home');
 
-    Route::post('member/get_id_member', 'Master\MemberController@get_id_member');
-    Route::get('member/get-member-by-kode/{member_kode}', 'Master\MemberController@get_member_by_kode');
-    Route::post('pembelian/get_pembelian_kode', 'Master\PembelianController@get_pembelian_kode');
-    Route::post('pembelian/storeDummy', 'Master\PembelianController@storeDummy');
-    Route::post('pembelian/delete_detail', 'Master\PembelianController@deleteDummy');
+    Route::group(['prefix' => 'master', 'as' => 'master.'], function() {
+        Route::resource('kategori', 'Master\KategoriController')
+            ->except(['create', 'show']);
+        Route::resource('supplier', 'Master\SupplierController')
+            ->except(['create', 'show']);
+        Route::resource('produk', 'Master\ProdukController')
+            ->except(['create', 'show']);
+        Route::get('produk/getProductCode', 'Master\ProdukController@getProductCode');
+        Route::get('produk/getProductByCode/{kode}', 'Master\ProdukController@getProductByCode');
+        Route::get('produk/getProductById/{id}', 'Master\ProdukController@getProductById');
+    });
 
-    Route::get('get_pembelian_detail', 'Master\PembelianController@get_pembelian_detail');
-    Route::get('get_penjualan_cart', 'PenjualanController@get_penjualan_cart');
+    Route::resource('user', 'Main\UserController')
+        ->except(['create', 'show']);
+    Route::resource('member', 'Main\MemberController')
+        ->except(['create', 'show']);
+    Route::get('member/createMemberCode', 'Main\MemberController@createMemberCode');
+    Route::get('member/getMemberByCode/{member_kode}', 'Main\MemberController@getMemberByCode');
+    Route::resource('stok', 'Main\StokController')
+        ->except(['create', 'show']);
+    Route::resource('setting', 'Main\SettingController');
 
-    Route::get('produk/{id}/minus_penjualan_cart', 'PenjualanController@minus_penjualan_cart');
-    Route::get('produk/{id}/plus_penjualan_cart', 'PenjualanController@plus_penjualan_cart');
-    Route::get('produk/{id}/enter_penjualan_cart', 'PenjualanController@enter_penjualan_cart');
-    Route::post('produk/clear_penjualan_cart', 'PenjualanController@clear_penjualan_cart');
-    Route::post('produk/insert-penjualan-data', 'PenjualanController@insert_penjualan_data');
+    Route::group(['prefix' => 'transaction', 'as' => 'transaction.'], function() {
+        // penjualan
+        Route::resource('penjualan', 'Transaction\PenjualanController')
+            ->only(['index']);
+        Route::post('penjualan/clearPenjualanCart', 'Transaction\PenjualanController@clearPenjualanCart');
+        Route::post('penjualan/insertPenjualanCart', 'Transaction\PenjualanController@insertPenjualanCart');
+        Route::get('penjualan/getPenjualanCart', 'Transaction\PenjualanController@getPenjualanCart');
+        Route::get('penjualan/{id}/plusPenjualanCartQty', 'Transaction\PenjualanController@plusPenjualanCartQty');
+        Route::get('penjualan/{id}/minusPenjualanCartQty', 'Transaction\PenjualanController@minusPenjualanCartQty');
+        Route::get('penjualan/{id}/enterPenjualanCartQty', 'Transaction\PenjualanController@enterPenjualanCartQty');
+        Route::get('penjualan/{id}/deletePenjualanCartItem', 'Transaction\PenjualanController@deletePenjualanCartItem');
+        Route::post('penjualan/insertPenjualanData', 'Transaction\PenjualanController@insertPenjualanData');
 
-    Route::get('pembelian/get_produk_by_kode/{kode}', 'Master\PembelianController@get_produk_by_kode');
-    Route::post('produk/get_produk_kode', 'Master\ProdukController@get_produk_kode');
+        // pembelian
+        Route::resource('pembelian', 'Transaction\PembelianController')
+            ->only(['index', 'store']);
+        Route::get('pembelian/getPembelianCode', 'Transaction\PembelianController@getPembelianCode');
+        Route::post('pembelian/insertPembelianCart', 'Transaction\PembelianController@insertPembelianCart');
+        Route::get('pembelian/{id}/enterPembelianCartQty', 'Transaction\PembelianController@enterPembelianCartQty');
+        Route::get('pembelian/{id}/deletePembelianCartItem', 'Transaction\PembelianController@deletePembelianCartItem');
+        Route::post('pembelian/deleteDummy', 'Transaction\PembelianController@deleteDummy');
+        Route::get('getPembelianDetail', 'Transaction\PembelianController@getPembelianDetail');
+    });
 
-    Route::post('produk/insert_penjualan_cart', 'PenjualanController@insert_penjualan_cart');
-    Route::get('pembelian/get_by_id/{id}', 'Master\PembelianController@get_by_id');
+    Route::group(['prefix' => 'report', 'as' => 'report.'], function() {
+        Route::resource('penjualan', 'Report\ReportPenjualanController')
+            ->only(['index', 'show']);
+    });
 });
 

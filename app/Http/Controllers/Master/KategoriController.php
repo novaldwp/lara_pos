@@ -11,18 +11,10 @@ use App\Models\Master\Kategori;
 
 class KategoriController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        // set session kategori
-        Session::put('nav_active', 'master');
-        Session::put('sub_active', 'kategori');
-
-        $kategori = Kategori::orderBy('kategori_id', 'DESC')->get();
+        $kategori = Kategori::orderBy('kategori_id', 'DESC')
+                        ->get();
 
         if(request()->ajax()) {
             return datatables()->of($kategori)
@@ -43,26 +35,9 @@ class KategoriController extends Controller
             ->make(true);
         }
 
-        return view('admin.kategori.index');
+        return view('master.kategori.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $rules = array(
@@ -83,26 +58,9 @@ class KategoriController extends Controller
         $kategori->save();
 
         //return with alert
-        return response()->json([ 'success' => "Data Berhasil Ditambahkan." ]);
+        return $this->sendInsert();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
 
@@ -111,13 +69,6 @@ class KategoriController extends Controller
         return response()->json($kategori);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         // make new variable input request
@@ -140,20 +91,14 @@ class KategoriController extends Controller
         $kategori->update($input);
 
         //return with alert
-        return response()->json([ 'success' => "Data Berhasil Ditambahkan." ]);
+        return $this->sendUpdate();
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $kategori = Kategori::FindOrFail($id);
         $kategori->delete();
 
-        return response()->json(true);
+        return $this->sendDelete();
     }
 }

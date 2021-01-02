@@ -6,48 +6,46 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Session;
 use DB;
-use App\Produk;
-use App\Kategori;
+use App\Models\Master\Produk;
+use App\Models\Master\Kategori;
+use App\Models\Main\Stok;
+use Illuminate\Support\Facades\File;
+use Intervention\Image\Facades\Image;
 
 class ProdukController extends Controller
 {
+    private $oriPath;
+    private $thumbPath;
+    private $stringCode;
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function __construct()
+    {
+        $this->oriPath      = public_path('images/produk');
+        $this->thumbPath    = public_path('images/produk/thumb');
+        $this->stringCode   = "PRDK";
+    }
+
     public function index()
     {
-        // set session produk
-        Session::put('nav_active', 'master');
-        Session::put('sub_active', 'produk');
-
         // fetch query
-        $produk     = Produk::orderBy('produk_id', 'DESC')
-                            ->leftJoin('kategori', 'produk.kategori_id', '=', 'kategori.kategori_id')
-                            ->select('produk_id', 'produk_kode', 'produk_nama', 'produk_beli', 'produk_jual', 'kategori.kategori_nama', 'produk_gambar')
-                            ->get();
+        $produk     = Produk::with(['kategori'])
+                        ->orderBy('produk_id', 'DESC')
+                        ->get();
         $kategori   = Kategori::orderBy('kategori_nama', 'ASC')->get();
 
         // ajax request with datatables
         if(request()->ajax()) {
             return datatables()->of($produk)
             ->addColumn('image', function($data){
-                $produk_image = $data->produk_gambar;
-                if($produk_image == "no_image.png") {
-                    $path = url('images/'.$data->produk_gambar);
-                }
-                else{
-                    $path = url('images/produk/'.$data->produk_gambar);
-                }
+                $thumbPath  = url('images/'.(($data->produk_image == "") ? "no_image.png":"produk/thumb/".$data->produk_image));
+                $oriPath    = url('images/'.(($data->produk_image == "") ? "no_image.png":"produk/".$data->produk_image));
 
-                $image = '
-                    <a href="#" id="image-click" data="'.$data->produk_id.'" image='.$path.'>
-                        <img alt="'.$data->produk_nama.'" width="36" src="'.$path.'"></img>
+                // image via lightbox2 js
+                $image  = '
+                    <a href="'.$oriPath.'" data-lightbox="image-1">
+                        <img src="'.$thumbPath.'" width="80" height="60"></img>
                     </a>
                 ';
-
                 return $image;
             })
             ->addColumn('action', function($data){
@@ -67,26 +65,9 @@ class ProdukController extends Controller
             ->make(true);
         }
 
-        return view('admin.produk.index', compact('kategori'));
+        return view('master.produk.index', compact('kategori'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         // customize rules validation
@@ -94,7 +75,7 @@ class ProdukController extends Controller
             'produk_nama'   => 'required|string',
             'produk_beli'   => 'required|integer',
             'produk_jual'   => 'required|integer',
-            'produk_gambar' => 'mimes:jpeg,png,gif,svg',
+            'produk_image' => 'mimes:jpg,jpeg,png,gif,svg',
             'kategori_id'   => 'required'
         );
 
@@ -108,77 +89,48 @@ class ProdukController extends Controller
         $this->validate($request, $rules, $messages);
 
         //image config
-        $file = $request->file('produk_gambar');
-        if($file) {
-            // rename of image
-            $image   = sha1(time()).".".$file->getClientOriginalExtension();
-            // define the path to save image
-            $path    = 'images/produk';
-            // upload image to path with new name
-            $file->move($path, $image);
+        if ($request->hasFile('produk_image'))
+        {
+            $file   = $request->file('produk_image');
 
+            $image  = $this->uploadImage($file);
         }
-        else{
-            $image = "no_image.png";
+        else {
+            $image  = "";
         }
 
         // insert data into database
         $produk = new Produk;
-        $produk->produk_gambar  = $image;
+        $produk->produk_image   = $image;
         $produk->produk_kode    = $request->input('produk_kode');
         $produk->produk_nama    = $request->input('produk_nama');
         $produk->produk_beli    = $request->input('produk_beli');
         $produk->produk_jual    = $request->input('produk_jual');
         $produk->kategori_id    = $request->input('kategori_id');
-
         $produk->save();
 
-        return $produk;
+        return $this->sendInsert();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-
         $produk = Produk::FindOrFail($id);
 
         return response()->json($produk);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         // make new variable input request
         $input = $request->all();
+
         // customize rules validation
         $rules = array(
             'produk_nama'   => 'required|string',
             'produk_beli'   => 'required|integer',
             'produk_jual'   => 'required|integer',
             'kategori_id'   => 'required|integer',
-            'produk_gambar' => 'mimes:jpeg,png,gif,svg'
+            'produk_image' => 'mimes:jpg,jpeg,png,gif,svg'
         );
 
         // customize error messages
@@ -194,71 +146,111 @@ class ProdukController extends Controller
         $produk = Produk::FindOrFail($id);
 
         // edit upload config
-        if ($request->hasfile('produk_gambar'))
+        if ($request->hasFile('produk_image'))
         {
-            //define variable for produk_gambar input
-            $file = $request->file('produk_gambar');
-            //rename the image name
-            $image  = sha1(time()).'.'.$file->getClientOriginalExtension();
-            //path image
-            $path   = 'images/produk/';
-            // apply the proceed
-            $upload = $file->move($path, $image);
-            // remove the replacing image
-            $old_image = $produk->produk_gambar;
-            // if file exists
-            if (file_exists($path.$old_image))
-            {
-                // then remove the old image file
-                @unlink($path.$old_image);
-            }
+            $file   = $request->file('produk_image');
+            $image  = $this->uploadImage($file);
+
+            File::delete($this->oriPath.'/'.$produk->produk_image);
+            File::delete($this->thumbPath.'/'.$produk->produk_image);
         }
         else{
-            $image = $produk->produk_gambar;
+            $image = $produk->produk_image;
         }
-        //define value of produk_gambar
-        $input['produk_gambar'] = $image;
-        // update data into database depends on id if no errors
-        $produk->update($input);
 
-        //return with alert
-        return $produk;
+        $produk->update([
+            'produk_nama'   => $request->produk_nama,
+            'produk_beli'   => $request->produk_beli,
+            'produk_jual'   => $request->produk_jual,
+            'kategori_id'   => $request->kategori_id,
+            'produk_image'  => $image
+        ]);
+
+        return $this->sendUpdate();
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         // search the data
         $produk = Produk::FindOrFail($id);
 
-        // config delete the file image define the id
-
-        //path image
-        $path       = 'images/produk/';
-        //define the file image
-        $old_image  = $produk->produk_gambar;
-        // if file exists
-        if (file_exists($path.$old_image))
-        {
-            // then remove the old image file
-            @unlink($path.$old_image);
+        // check produk image
+        if ($produk->produk_image != "") {
+            // delete image if produk have it
+            File::delete($this->oriPath.'/'.$produk->produk_image);
+            File::delete($this->thumbPath.'/'.$produk->produk_image);
         }
-        // remove from db
+
         $produk->delete();
 
-
-        return response()->json(true);
+        return $this->sendDelete();
     }
 
-    public function get_produk_kode()
+    public function getProductCode()
     {
-        $produk_kode = Produk::generate_produk_kode();
+        $produk = Produk::orderBy('produk_kode', 'DESC')
+                    ->first();
 
-        return response()->json($produk_kode);
+        if ($produk)
+        {
+            $string = substr($produk->produk_kode, 7, 1);
+            $count  = $string + 1;
+        }
+        else {
+            $count  = 1;
+        }
+
+        $digit  = sprintf("%04s", $count);
+        $code   = $this->stringCode.$digit;
+
+        return response()->json($code);
+    }
+
+    public function uploadImage($img)
+    {
+        // check directory
+        if (!File::isDirectory($this->oriPath))
+        {
+            // create new if not exist
+            File::makeDirectory($this->oriPath, 0777, true, true);
+            File::makeDirectory($this->thumbPath, 0777, true, true);
+        }
+
+        $imageName  = time().'.'.uniqid().'.'.$img->getClientOriginalExtension();
+
+        $image      = Image::make($img->getRealPath());
+        $image->save($this->oriPath.'/'.$imageName);
+        $image->resize(180, 180, function($cons)
+            {
+                $cons->aspectRatio();
+            })->save($this->thumbPath.'/'.$imageName);
+
+        return $imageName;
+    }
+
+    public function getProductByCode($code)
+    {
+        $produk = Produk::with(['stok'])->where('produk_kode', $code)->first();
+
+        if($produk)
+        {
+            return response()->json(['message' => 'Produk berhasil ditemukan.', 'produk' => $produk], 200);
+        }
+        else {
+            return response()->json(['message' => 'Produk tidak ditemukan.'], 404);
+        }
+    }
+
+    public function getProductById($id)
+    {
+        $produk = Produk::with(['stok'])->where('produk_id', $id)->first();
+
+        if ($produk)
+        {
+            return response()->json(['message' => 'Successfully get product.', 'produk' => $produk], 200);
+        }
+        else {
+            return response()->json(['message' => 'Failed get product.'], 404);
+        }
     }
 }

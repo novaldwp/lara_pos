@@ -20,6 +20,10 @@
   <link rel="stylesheet" href="{{ asset('adminLTE/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css') }}">
   <!-- SweetAlert 2-->
   <link rel="stylesheet" href="{{ asset('sweetalert2/sweetalert2.min.css') }}">
+  <!-- lightbox -->
+  <link rel="stylesheet" href="{{ asset('lightbox2/src/css/lightbox.css') }}">
+  <!-- select2 -->
+  <link rel="stylesheet" href="{{ asset('select2/dist/css/select2.min.css') }}">
   <!-- Theme style -->
   <link rel="stylesheet" href="{{ asset('adminLTE/dist/css/AdminLTE.min.css') }}">
   <!-- AdminLTE Skins. Choose a skin from the css/skins
@@ -48,6 +52,9 @@
   <!-- Google Font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
+
+@yield('style')
+
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
 

@@ -13,13 +13,10 @@ class SettingTableSeeder extends Seeder
     {
         DB::table('setting')->insert(array(
             [
-                'nama_perusahaan' => 'YohoMart',
-                'alamat' => 'Jl. Melati Putih, Kemanggisan, Palmerah, Jakarta Barat',
-                'telepon' => '08992652281',
-                'logo' => 'logo.png',
-                'kartu_member' => 'card.png',
-                'diskon_member' => '10',
-                'tipe_nota' => '0'
+                'setting_nama' => 'Yuhumart',
+                'setting_alamat' => 'Jl. Melati Putih, Kemanggisan, Palmerah, Jakarta Barat',
+                'setting_phone' => '08992652281',
+                'setting_image' => '',
             ]
         ));
     }
