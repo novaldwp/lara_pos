@@ -44,7 +44,6 @@ class ReportPenjualanController extends Controller
                                 $q->whereYear('created_at', $year);
                             }
                         )
-                        // ->select(DB::raw('sum(penjualan_total) as penjualan_total, penjualan_kode, created_at, penjualan_id'))
                         ->orderBy('penjualan_id', 'DESC')
                         ->get();
 
@@ -79,7 +78,6 @@ class ReportPenjualanController extends Controller
         $penjualan = Penjualan::with(['member', 'penjualan_detail' => function($q) {
                             $q->with('produk');
                         }, 'user'])->where('penjualan_id', $id)->first();
-        // $penjualan  = Penjualan::with(['penjualan_detail'])->where('penjualan_id', $id)->first();
         $penjualan['tanggal']   = tanggal_indonesia($penjualan->created_at);
 
         return response()->json($penjualan);

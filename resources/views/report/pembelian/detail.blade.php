@@ -1,54 +1,63 @@
-<!-- Start of Bawah -->
-<div class="row">
-    <div class="col-xs-12">
-        <div class="box">
-            <div class="box-header">
-                <h4>Detail Pembelian</h4>
-                <hr>
-            </div>
-            <div class="box-body">
-                <!-- Content body-->
-                <div class="col-md-12">
-                    <table class="table table-responsive table-hover table-striped" id="detail-table">
-                        <thead>
-                            <tr>
-                                <th width="5%">No</th>
-                                <th>Kode Produk</th>
-                                <th>Nama Produk</th>
-                                <th>Harga Beli</th>
-                                <th class="text-center" width="20%">Jumlah</th>
-                                <th>Sub Total</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @php $i = 1; @endphp
-                            @foreach($pdummy as $row)
-                            <tr>
-                                <td>{{ $i++ }}</td>
-                                <td>{{ $row->produk->produk_kode }}</td>
-                                <td>{{ $row->produk->produk_nama }}</td>
-                                <td>{{ $row->produk->produk_beli }}</td>
-                                <td class="text-center">
-                                    <input type="text" class="text-center" name="qty-enter" produk-id="{{ $row->produk_id }}" value="{{ $row->pembelian_jumlah }}" style="width:20%" autocomplete="off">
-                                </td>
-                                <td>{{ $row->subtotal }}</td>
-                                <td><a href="#" class="btn btn-danger" id="delete-detail" produk-id="{{ $row->produk_id }}" data-toggle="tooltip" title="Hapus"><span class="fa fa-trash"></span></a></td>
-                            </tr>
-                            @endforeach
-                            <tr>
-                                <td colspan="4" ></td>
-                                <td align="left"><strong>Grand Total:</strong></td>
-                                <td colspan="2" aling="left"><strong>{{ $gtotal }}</strong></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="box-footer">
-                    <button class="btn btn-success col-sm-12" name="confirm" id="confirm" url="{{ route('transaction.pembelian.store') }}">Simpan</button>
-                </div>
-            <!-- End of Content body-->
+<div id="reportModal" class="modal fade" role="dialog" aria-hidden="true" data-backdrop="static" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                    <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          <h4 id="modal-title" class="modal-title">Detail Transaksi Pembelian</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 text-left">
+                                <a href="{{ URL::to('images/pengaturan/'.$setting->setting_image) }}" data-lightbox="image-1">
+                                    <img src="{{ URL::to('images/pengaturan/thumb/'.$setting->setting_image) }}" width="300" height="100"></img>
+                                </a>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <p style="font-size:30px;">{{ $setting->setting_nama ?? ''}}</p>
+                                <p>{{ $setting->setting_alamat ?? '' }}</p>
+                                <p>{{ $setting->setting_phone ?? '' }}</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-6 text-left">
+                                <p style="font-size:26px;" id="report-supplier-nama">Nama Supplier</p>
+                                <p id="report-supplier-alamat">Alamat Supplier</p>
+                                <p id="report-supplier-phone">No. Telp Supplier</p>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <p style="font-size:26px;" id="report-pembelian-kode">No. Transaksi #PMB1029192</p>
+                                <p id="report-pembelian-tanggal">Tanggal Pembelian</p>
+                                <p id="report-pembelian-nama">Nama Petugas</p>
+                            </div>
+                            <br><br><br>
+                            <div class="col-md-12">
+                                <div class="table-responsive">
+                                    <table name="table-report" class="table table-striped table-hovered">
+                                        <thead>
+                                            <tr>
+                                                <th>Kode Produk</th>
+                                                <th>Nama Produk</th>
+                                                <th>Quantity</th>
+                                                <th>Harga</th>
+                                                <th width="15%">Subtotal</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="report-body-table">
+
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th colspan="3"></th>
+                                                <th>Grand Total :</th>
+                                                <th class="text-right"><p id="report-pembelian-total">Total Pembelian</p></th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+              </div>
         </div>
-    </div>
-</div>
-<!-- End of Bawah -->
+  </div>

@@ -180,7 +180,7 @@
                     </a>
                 </li>
                 <li class="{{ Request::is('report/pembelian') ? 'active' : '' }}">
-                    {{-- <a href="{{ route('report.pembelian.index') }}"> --}}
+                    <a href="{{ route('report.pembelian.index') }}">
                         <i class="fa fa-circle-o"></i>
                         Pembelian
                     </a>

@@ -1,332 +1,166 @@
 
 @section('script')
 <script>
-$(document).ready(function(){
-
+$('document').ready(function(){
     $.ajaxSetup({
         headers: {
           'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
         }
     });
 
-    deleteDummy();
-    getPembelianCode();
-
     // select2 js config
-    $('#supplier_id').select2({
-        placeholder: "Pilih Supplier",
+    $('#period').select2({
         allowclear: true
     });
 
+    // config lightbox js
+    lightbox.option({
+        'disableScrolling': true,
+        'showImageNumberLabel': false,
+    })
+
+    // config datatable for total pembelian
+    $('#data-table').on('draw.dt', function() {
+        let intVal, total, pageTotal;
+
+        intVal = function(i) {
+            return typeof i === "string" ?
+            i.replace(/[\$,]/g, '') * 1 :
+            typeof i === "number" ?
+            i : 0;
+        }
+
+        total = table.column(6).data().reduce( function(a, b) {
+                    a = convertToAngka(a);
+                    b = convertToAngka(b);
+            return (intVal(a)) + (intVal(b));
+        }, 0);
+
+        pageTotal = table.column(6, {page: 'current'}).data().reduce(function (a, b) {
+            return intVal(a) + intVal(b);
+        }, 0);
+
+        $('.total').text(convertToRupiah(total));
+    });
+
     table = $("#data-table").DataTable({
-              responsive: true,
-              processing : true,
-              serverSide : true,
-              ajax: {
-                url: "{{ route('transaction.pembelian.index') }}",
-              },
-              columns: [
-                {
-                  data: 'DT_RowIndex',
-                  name: 'DT_RowIndex'
-                },
-                {
-                  data: 'produk_kode',
-                  name: 'produk_kode'
-                },
-                {
-                  data: 'produk_nama',
-                  name: 'produk_nama'
-                },
-                {
-                  data: 'produk_beli',
-                  name: 'produk_beli'
-                },
-                {
-                  data: 'action',
-                  name: 'action',
-                  orderable: false,
-                  searchable: false
-                }
-              ],
-              "oLanguage" : {
-                "sSearch" : "Pencarian",
-                "oPaginate" : {
-                  "sNext" : "Berikutnya",
-                  "sPrevious" : "Sebelumnya",
-                  "sFirst" : "Awal",
-                  "sLast" : "Akhir",
-                  "sEmptyTable" : "Data tidak ditemukan!"
-                }
-              }
-            });
-
-    function getPembelianDetail(){
-        $('.tampil-detail').load('getPembelianDetail');
-        $('.tampil-detail').show();
-    }
-
-    function deleteDummy(){
-        $.ajax({
-            url:'pembelian/deleteDummy',
-            type:'POST'
-        });
-    }
-
-    function goToTop()
-    {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    }
-
-    $('#produk_kode').on('input', function(e){
-        let produk_kode = $('#produk_kode').val(),
-            current     = $(location).attr('href');
-            link        = current.replace("transaction/pembelian", "master/produk");
-
-        if(produk_kode.length == 8) {
-            $.ajax({
-                url: link+'/getProductByCode/'+produk_kode,
-                type: 'GET',
-                dataType: 'JSON',
-                success:function(data)
-                {
-                    let stok    = (data.produk.stok == null) ? '0' : data.produk.stok.stok_jumlah;
-
-                    $('#produk_id').val(data.produk.produk_id);
-                    $('#produk_nama').val(data.produk.produk_nama);
-                    $('#produk_beli').val(data.produk.produk_beli);
-                    $('#stok_jumlah').val(stok);
-                },
-                error: function(res)
-                {
-                    swal({
-                        type: "error",
-                        title: "Error!",
-                        text: res.responseJSON.message,
-                        timer: 2000,
-                        showConfirmButton: false
-                    })
-                }
-            });
-        }
-    });
-
-    function getPembelianCode()
-    {
-        $.ajax({
-            url:'pembelian/getPembelianCode',
-            type: 'GET',
-            dataType: 'JSON',
-            success:function(data){
-                $("#pembelian_kode").val(data);
-            }
-        });
-    }
-
-    $("#search").on('click', function(e){
-        e.preventDefault();
-
-        let modal = $('#formModal');
-
-        modal.modal('show');
-    });
-
-    $('#data-table').on('click', '#select', function(e){
-        e.preventDefault();
-
-        let me      = $(this),
-            id      = me.attr('data'),
-            current = $(location).attr('href'),
-            link    = current.replace("transaction/pembelian", "master/produk");
-
-        $.ajax({
-            url: link+'/getProductById/'+id,
-            type: 'GET',
-            dataType: 'JSON',
-            success: function(data)
-            {
-                let stok    = (data.produk.stok == null) ? '0' : data.produk.stok.stok_jumlah,
-                    modal   = $('#formModal');
-
-                $('#produk_id').val(data.produk.produk_id);
-                $('#produk_kode').val(data.produk.produk_kode);
-                $('#produk_nama').val(data.produk.produk_nama);
-                $('#produk_beli').val(data.produk.produk_beli);
-                $('#stok_jumlah').val(stok);
-
-                modal.modal('hide');
-            }
-        });
-    });
-
-    $('#tambah').on('click', function(e){
-        e.preventDefault();
-
-        let produk_id        = $('#produk_id').val(),
-            pembelian_jumlah = $('#pembelian_jumlah').val(),
-            produk_beli      = $('#produk_beli').val();
-
-        if ($('#produk_id').val() == '')
-        {
-            swal({
-                title:"Pilih produk terlebih dahulu!",
-                type: "warning",
-                timer: 1000,
-                showConfirmButton: false
-            });
-
-            $('#produk_kode').focus();
-        }
-        else{
-            $.ajax({
-                url:'pembelian/insertPembelianCart',
-                type:'POST',
-                dataType:'JSON',
-                data:{produk_id:produk_id, pembelian_jumlah:pembelian_jumlah, produk_beli:produk_beli},
-                success:function(res)
-                {
-                    $('#pembelian_jumlah').val('');
-                    $('#produk_id').val('');
-                    $('#produk_kode').val('');
-                    $('#produk_beli').val('');
-                    $('#produk_nama').val('');
-                    $('#stok_jumlah').val('');
-                    getPembelianDetail();
-                    $('#produk_kode').focus();
-                },
-                error:function(xhr)
-                {
-                    let res = xhr.responseTEXT;
-
-                    alert(rest);
-                }
-            });
-        }
-    });
-
-    $('body').on('keypress', 'input[name="qty-enter"]', function(e){
-        let me      = $(this),
-            id      = me.attr('produk-id'),
-            qty     = parseInt(me.val());
-            keycode = (e.keyCode ? e.keyCode :  e.which);
-
-        if(keycode == 13)
-        {
-            $.ajax({
-                url:'pembelian/'+id+'/enterPembelianCartQty',
-                type:'GET',
-                dataType:'JSON',
-                data:{qty:qty},
-                success:function()
-                {
-                    getPembelianDetail();
-                    $('#produk_kode').focus();
-                }
-            });
-        }
-    });
-
-    $('body').on('click', '#delete-detail', function(e) {
-        e.preventDefault();
-
-        let me  = $(this),
-            produk_id   = me.attr('produk-id');
-
-        $.ajax({
-            url: 'pembelian/'+produk_id+'/deletePembelianCartItem',
-            type: 'GET',
-            dataType: 'JSON',
-            success: function(res)
-            {
-                swal({
-                    title: "Berhasil!",
-                    text: res.message,
-                    type: "success",
-                    timer: 2000,
-                    showConfirmButton: false
-                });
-
-                if (res.count == 0)
-                {
-                    $('.tampil-detail').hide();
-                    goToTop();
-                }
-                else {
-                    getPembelianDetail();
+            responsive: true,
+            processing : true,
+            serverSide : true,
+            ajax: {
+                url: "{{ route('report.pembelian.index') }}",
+                type: "GET",
+                data: function(d) {
+                    d.filter = $('#period').val();
                 }
             },
-            error: function(res)
+            columns: [
             {
-                swal({
-                    type: "error",
-                    title: "Error!",
-                    text: res.responseJSON.message,
-                    timer: 2000,
-                    showConfirmButton: false
-                });
+                data: 'DT_RowIndex',
+                name: 'DT_RowIndex'
+            },
+            {
+                data: 'pembelian_kode',
+                name: 'pembelian_kode'
+            },
+            {
+                data: 'supplier.supplier_nama',
+                name: 'supplier.supplier_nama',
+                orderable: false,
+                searchable: false
+            },
+            {
+                data: 'pembelian_detail[0].total',
+                name: 'pembelian_detail[0].total',
+                orderable: false,
+                searchable: false
+            },
+            {
+                data: 'pembelian_total',
+                name: 'pembelian_total',
+                orderable: false,
+                searchable: false
+            },
+            {
+                data: 'user.name',
+                name: 'user.name',
+                orderable: false,
+                searchable: false
+            },
+            {
+                data: 'tanggal',
+                name: 'tanggal'
+            },
+            {
+                data: 'action',
+                name: 'action',
+                orderable: false,
+                searchable: false
+            }
+            ],
+            columnDefs: [
+                {
+                    className: 'text-center', targets: [3]
+                }
+            ],
+            "oLanguage" :
+            {
+                "sSearch" : "Pencarian",
+                "oPaginate" :
+                    {
+                        "sNext" : "Berikutnya",
+                        "sPrevious" : "Sebelumnya",
+                        "sFirst" : "Awal",
+                        "sLast" : "Akhir",
+                        "sEmptyTable" : "Data tidak ditemukan!"
+                    }
             }
         });
+
+    $('body').on('click', '#report-detail', function(e) {
+        e.preventDefault();
+
+        let id = $(this).attr('data');
+
+        $.ajax({
+            url: 'pembelian/'+id,
+            method: 'GET',
+            dataType: 'JSON',
+            cache: false,
+            success: function(data)
+            {
+                let i, gtotal;
+
+                $('#report-body-table').find('.row-report-table').remove();
+                $('#report-supplier-nama').text(data.supplier.supplier_nama);
+                $('#report-supplier-alamat').text(data.supplier.supplier_alamat);
+                $('#report-supplier-phone').text(data.supplier.supplier_phone);
+                $('#report-pembelian-kode').text('No. Transaksi #'+data.pembelian_kode);
+                $('#report-pembelian-tanggal').text(data.tanggal);
+                $('#report-pembelian-nama').text(data.user.name);
+                $('#report-pembelian-total').text(convertToRupiah(data.pembelian_total));
+
+                for(i=0; i < data.pembelian_detail.length; i++)
+                {
+                    $('#report-body-table').append(
+                        '<tr class="row-report-table">'+
+                        '<td>'+data.pembelian_detail[i].produk.produk_kode+'</td>'+
+                        '<td>'+data.pembelian_detail[i].produk.produk_nama+'</td>'+
+                        '<td>'+data.pembelian_detail[i].detailpembelian_jumlah+'</td>'+
+                        '<td>'+convertToRupiah(data.pembelian_detail[i].produk.produk_beli)+'</td>'+
+                        '<td class="text-right">'+convertToRupiah(data.pembelian_detail[i].detailpembelian_subtotal)+'</td>'+
+                        '</tr>'
+                    );
+                }
+            }
+        });
+
+        $('#reportModal').modal('show');
     });
 
-    $('body').on('click', '#confirm', function(e){
+    $('body').on('change', '#period', function(e) {
         e.preventDefault();
-        let pembelian_kode = $('#pembelian_kode').val(),
-            supplier_id    = $('#supplier_id').val();
-
-        if(supplier_id == "") {
-            swal({
-                title: "Peringatan!",
-                text: "Pilih supplier terlebih dahulu!",
-                type: "warning",
-                timer: 2000,
-                showConfirmButton: false
-            });
-        }
-        else {
-            swal({
-            title: "Konfirmasi",
-            text: "Apakah data sudah terisi dengan benar?",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Ya!',
-            cancelButtonText: 'Tidak!',
-            }).then( (result) => {
-                if (result.value)
-                {
-                    $.ajax({
-                        url:"{{ route('transaction.pembelian.index') }}",
-                        type:'POST',
-                        dataType:'JSON',
-                        data:{pembelian_kode:pembelian_kode, supplier_id:supplier_id},
-                        success:function(res)
-                        {
-                            swal({
-                                type: "success",
-                                text: res.message,
-                                timer: 2000,
-                                showConfirmButton: false,
-                            });
-
-                            goToTop();
-                            getPembelianCode();
-                            $('.tampil-detail').hide();
-                            $('#supplier_id').val('').trigger('change');
-                        },
-                        error:function(xhr)
-                        {
-                            let res = xhr.responseTEXT;
-
-                            alert(res);
-                        }
-                    });
-                }
-            });
-        }
+        table.draw();
     });
 });
 </script>

@@ -35,11 +35,10 @@ class DashboardController extends Controller
                                     },
                                     'member'
                                 ])
+                                ->whereDate('created_at', date('Y-m-d'))
                                 ->orderBy('penjualan_id', 'DESC')
                                 ->take(5)
                                 ->get();
-
-                                // dd($recentPenjualan);
 
         return view('main.dashboard.index',
                         compact('countPenjualan', 'countProduk', 'countSupplier',

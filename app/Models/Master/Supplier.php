@@ -3,6 +3,7 @@
 namespace App\Models\Master;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Transaction\Pembelian;
 
 class Supplier extends Model
 {
@@ -20,5 +21,10 @@ class Supplier extends Model
 
     public function produk(){
         return $this->belongsTo('App\Produk');
+    }
+
+    public function pembelian()
+    {
+        return $this->hasOne(Pembelian::class, 'supplier_id');
     }
 }

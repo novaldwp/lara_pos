@@ -19,22 +19,6 @@ $('document').ready(function(){
         'showImageNumberLabel': false,
     })
 
-    // function convertToRupiah(angka)
-    // {
-    //     var rupiah = '';
-    //     var angkarev = angka.toString().split('').reverse().join('');
-    //     for(var i = 0; i < angkarev.length; i++) if(i%3 == 0) rupiah += angkarev.substr(i,3)+'.';
-    //     return 'Rp. '+rupiah.split('',rupiah.length-1).reverse().join('');
-    // }
-
-    // function convertToAngka(rupiah)
-    // {
-    //     rupiah = rupiah.toString().replace("Rp. ", "");
-    //     rupiah = rupiah.toString().replace(".", "");
-
-    //     return rupiah;
-    // }
-
     // config datatable for total penjualan
     $('#data-table').on('draw.dt', function() {
         let intVal, total, pageTotal;
@@ -81,11 +65,15 @@ $('document').ready(function(){
             },
             {
                 data: 'member.member_nama',
-                name: 'member.member_nama'
+                name: 'member.member_nama',
+                orderable: false,
+                searchable: false
             },
             {
                 data: 'penjualan_detail[0].total',
-                name: 'penjualan_detail[0].total'
+                name: 'penjualan_detail[0].total',
+                orderable: false,
+                searchable: false
             },
             {
                 data: 'tanggal',
@@ -93,7 +81,9 @@ $('document').ready(function(){
             },
             {
                 data: 'user.name',
-                name: 'user.name'
+                name: 'user.name',
+                orderable: false,
+                searchable: false
             },
             {
                 data: 'penjualan_total',
@@ -162,7 +152,6 @@ $('document').ready(function(){
             {
                 let i, gtotal;
 
-                console.log(data);
                 $('#report-body-table').find('.row-report-table').remove();
                 $('#report-pembeli-nama').text(data.member.member_nama);
                 $('#report-pembeli-alamat').text(data.member.member_alamat);
@@ -185,20 +174,8 @@ $('document').ready(function(){
                 }
 
                 $('#report-penjualan-total').text(convertToRupiah(data.penjualan_total));
-                // $.each(data.penjualan_detail, function(index, value){
-                //     console.log(index+' - '+value);
-                    // $.each(value, function(index, value) {
-                    //     console.log(value);
-                    // })
-                // })
-
-                // $('#report-body-table').append(
-                //     '<tr>' +
-                //     '<td> Yuk coba yukkk</td>'  +
-                //     '</tr>'
-                // );
             }
-        })
+        });
 
         $('#reportModal').modal('show');
     });
@@ -206,7 +183,7 @@ $('document').ready(function(){
     $('body').on('change', '#period', function(e) {
         e.preventDefault();
         table.draw();
-    })
+    });
 });
 </script>
 @endsection

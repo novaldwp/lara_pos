@@ -7,6 +7,7 @@ use DB;
 
 use App\Models\Main\Stok;
 use App\Models\Transaction\Penjualandetail;
+use App\Models\Transaction\PembelianDetail;
 
 class Produk extends Model
 {
@@ -35,8 +36,13 @@ class Produk extends Model
         return $this->hasMany(Penjualandetail::class, 'produk_id');
     }
 
+    public function pembelian_detail()
+    {
+        return $this->hasMany(PembelianDetail::class, 'produk_id');
+    }
+
     public function pembeliandummy(){
-        return $this->hasOne(PembelianDummy::class, 'produk_id');
+        return $this->hasMany(PembelianDummy::class, 'produk_id');
     }
 
     public function penjualandummy(){
