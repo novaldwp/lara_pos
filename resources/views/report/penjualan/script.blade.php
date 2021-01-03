@@ -19,21 +19,21 @@ $('document').ready(function(){
         'showImageNumberLabel': false,
     })
 
-    function convertToRupiah(angka)
-    {
-        var rupiah = '';
-        var angkarev = angka.toString().split('').reverse().join('');
-        for(var i = 0; i < angkarev.length; i++) if(i%3 == 0) rupiah += angkarev.substr(i,3)+'.';
-        return 'Rp. '+rupiah.split('',rupiah.length-1).reverse().join('');
-    }
+    // function convertToRupiah(angka)
+    // {
+    //     var rupiah = '';
+    //     var angkarev = angka.toString().split('').reverse().join('');
+    //     for(var i = 0; i < angkarev.length; i++) if(i%3 == 0) rupiah += angkarev.substr(i,3)+'.';
+    //     return 'Rp. '+rupiah.split('',rupiah.length-1).reverse().join('');
+    // }
 
-    function convertToAngka(rupiah)
-    {
-        rupiah = rupiah.toString().replace("Rp. ", "");
-        rupiah = rupiah.toString().replace(".", "");
+    // function convertToAngka(rupiah)
+    // {
+    //     rupiah = rupiah.toString().replace("Rp. ", "");
+    //     rupiah = rupiah.toString().replace(".", "");
 
-        return rupiah;
-    }
+    //     return rupiah;
+    // }
 
     // config datatable for total penjualan
     $('#data-table').on('draw.dt', function() {
@@ -84,8 +84,8 @@ $('document').ready(function(){
                 name: 'member.member_nama'
             },
             {
-                data: 'penjualan_detail.total',
-                name: 'penjualan_detail.total'
+                data: 'penjualan_detail[0].total',
+                name: 'penjualan_detail[0].total'
             },
             {
                 data: 'tanggal',
@@ -160,26 +160,43 @@ $('document').ready(function(){
             cache: false,
             success: function(data)
             {
-                console.log(data);
-                // $('#report-pembeli-nama').text(data.member.member_nama);
-                // $('#report-pembeli-alamat').text(data.member.member_alamat);
-                // $('#report-pembeli-phone').text(data.member.member_phone);
-                // $('#report-penjualan-kode').text('No. Transaksi #'+data.penjualan_kode);
-                // $('#report-penjualan-tanggal').text(data.tanggal);
-                // $('#report-penjualan-nama').text(data.user.name);
+                let i, gtotal;
 
+                console.log(data);
+                $('#report-body-table').find('.row-report-table').remove();
+                $('#report-pembeli-nama').text(data.member.member_nama);
+                $('#report-pembeli-alamat').text(data.member.member_alamat);
+                $('#report-pembeli-phone').text(data.member.member_phone);
+                $('#report-penjualan-kode').text('No. Transaksi #'+data.penjualan_kode);
+                $('#report-penjualan-tanggal').text(data.tanggal);
+                $('#report-penjualan-nama').text(data.user.name);
+
+                for(i=0; i < data.penjualan_detail.length; i++)
+                {
+                    $('#report-body-table').append(
+                        '<tr class="row-report-table">'+
+                        '<td>'+data.penjualan_detail[i].produk.produk_kode+'</td>'+
+                        '<td>'+data.penjualan_detail[i].produk.produk_nama+'</td>'+
+                        '<td>'+data.penjualan_detail[i].detailpenjualan_qty+'</td>'+
+                        '<td>'+convertToRupiah(data.penjualan_detail[i].produk.produk_jual)+'</td>'+
+                        '<td class="text-right">'+convertToRupiah(data.penjualan_detail[i].detailpenjualan_subtotal)+'</td>'+
+                        '</tr>'
+                    );
+                }
+
+                $('#report-penjualan-total').text(convertToRupiah(data.penjualan_total));
                 // $.each(data.penjualan_detail, function(index, value){
                 //     console.log(index+' - '+value);
-                //     $.each(value.produk, function(index, value) {
-                //         console.log(value);
-                //     })
+                    // $.each(value, function(index, value) {
+                    //     console.log(value);
+                    // })
                 // })
-                // console.log(data.penjualan_detail.produk);
-                $('#report-body-table').append(
-                    '<tr>' +
-                    '<td> Yuk coba yukkk</td>'  +
-                    '</tr>'
-                );
+
+                // $('#report-body-table').append(
+                //     '<tr>' +
+                //     '<td> Yuk coba yukkk</td>'  +
+                //     '</tr>'
+                // );
             }
         })
 

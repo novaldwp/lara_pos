@@ -140,7 +140,7 @@
                         <td>{{ $i++ }}</td>
                         <td>{{ $row->penjualan_kode }}</td>
                         <td>{{ convert_to_rupiah($row->penjualan_total) }}</td>
-                        <td>{{ $row->penjualan_detail->total }}</td>
+                        <td>{{ $row->penjualan_detail[0]->total }}</td>
                         <td>{{ $row->member->member_nama }}</td>
                     </tr>
                     @empty

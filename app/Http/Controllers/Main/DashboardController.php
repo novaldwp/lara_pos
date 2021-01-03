@@ -39,6 +39,8 @@ class DashboardController extends Controller
                                 ->take(5)
                                 ->get();
 
+                                // dd($recentPenjualan);
+
         return view('main.dashboard.index',
                         compact('countPenjualan', 'countProduk', 'countSupplier',
                                 'sumPenjualan', 'topProduk', 'recentPenjualan')

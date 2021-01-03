@@ -11,21 +11,24 @@ $('document').ready(function(){
     });
 
     $('#produk_kode').focus();
-    clear_penjualan_cart()
+    clearPenjualanCart()
 
-    function get_penjualan_cart(){
+    function getPenjualanCart()
+    {
         $('#detail-cart').load('penjualan/getPenjualanCart');
         $('#detail-cart').show();
     }
 
-    function clear_penjualan_cart(){
+    function clearPenjualanCart()
+    {
         $.ajax({
             url: uri+'clearPenjualanCart',
             type: 'POST'
         });
     }
 
-    function payment_modal(){
+    function payment_modal()
+    {
         $('#penjualanModal').modal('show');
     }
 
@@ -42,7 +45,7 @@ $('document').ready(function(){
                 data:{kode:kode},
                 success: function(res)
                 {
-                    get_penjualan_cart();
+                    getPenjualanCart();
                     $('#produk_kode').focus();
                 },
                 error: function(res)
@@ -70,7 +73,7 @@ $('document').ready(function(){
             dataType: 'JSON',
             success:function(res)
             {
-                get_penjualan_cart();
+                getPenjualanCart();
             }
         });
     });
@@ -87,7 +90,7 @@ $('document').ready(function(){
             success:function(res)
             {
                 if (res.countCart != 0) {
-                    get_penjualan_cart();
+                    getPenjualanCart();
                 }
                 else {
                     $('#detail-cart').hide();
@@ -124,7 +127,7 @@ $('document').ready(function(){
                     data:{qty:qty},
                     success:function()
                     {
-                        get_penjualan_cart();
+                        getPenjualanCart();
                         $('#produk_kode').focus();
                     }
                 });
@@ -146,7 +149,7 @@ $('document').ready(function(){
             {
                 if (res.countCart != 0)
                 {
-                    get_penjualan_cart();
+                    getPenjualanCart();
                 }
                 else {
                     $('#detail-cart').hide();
@@ -201,7 +204,7 @@ $('document').ready(function(){
     });
 
     shortcut.add("F2", function(){
-        clear_penjualan_cart();
+        clearPenjualanCart();
     });
 
     shortcut.add("F4", function(){
@@ -260,20 +263,21 @@ $('document').ready(function(){
         }
         else{
             $(this).attr('disabled', true);
-            var no_penjualan = $('#no_penjualan').val(),
-                grand_total  = convertToAngka($('#grand_total').val()),
-                uang_bayar   = convertToAngka($('#uang_bayar').val()),
-                kembalian    = convertToAngka($('#kembalian').val()),
-                cashier_id   = $('#cashier_name').attr('cashier-id');
-                member_kode    = $('#member_kode').val();
+            var no_penjualan    = $('#no_penjualan').val(),
+                penjualan_kode  = $('#penjualan_kode').val();
+                grand_total     = convertToAngka($('#grand_total').val()),
+                uang_bayar      = convertToAngka($('#uang_bayar').val()),
+                kembalian       = convertToAngka($('#kembalian').val()),
+                cashier_id      = $('#cashier_name').attr('cashier-id');
+                member_kode     = $('#member_kode').val();
 
             $.ajax({
                 url: 'penjualan/insertPenjualanData',
                 type: 'POST',
                 dataType: 'JSON',
                 data: {
-                    no_penjualan:no_penjualan, grand_total:grand_total, uang_bayar:uang_bayar,
-                    kembalian:kembalian, cashier_id:cashier_id, member_kode:member_kode
+                    grand_total:grand_total, uang_bayar:uang_bayar,
+                    kembalian:kembalian, cashier_id:cashier_id, member_kode:member_kode, penjualan_kode:penjualan_kode
                 },
                 success:function(res)
                 {

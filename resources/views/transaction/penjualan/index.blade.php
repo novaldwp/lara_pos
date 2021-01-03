@@ -36,6 +36,5 @@
         </div>
     </div>
 </div>
-
 @endsection
 @include('transaction.penjualan.script')

@@ -49,7 +49,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">No. Penjualan:</label>
                                     <div class="col-sm-8">
-                                        <input type="text" class="form-control" id="no_penjualan" name="no_penjualan" value="PENJ191929" readonly>
+                                        <input type="text" class="form-control" id="penjualan_kode" name="penjualan_kode" readonly>
                                     </div>
                                 </div>
 
@@ -106,6 +106,10 @@
 
 <script>
     $(document).ready(function(){
+        let uri = 'penjualan/';
+
+        getPenjualanCode();
+
         $( '#uang_bayar' ).mask('0.000.000.000', {reverse: true});
 
         $('body').on('keyup', '#uang_bayar', function(){
@@ -121,5 +125,17 @@
 
             $('#kembalian').val(convertToRupiah(kembalian));
         });
+
+        function getPenjualanCode()
+        {
+            $.ajax({
+                url: uri+'getPenjualanCode',
+                method: 'GET',
+                success: function(data)
+                {
+                    $('#penjualan_kode').val(data);
+                }
+            });
+        }
     })
 </script>

@@ -168,17 +168,17 @@ class PenjualanController extends Controller
 
     public function insertPenjualanData(Request $request)
     {
-        $id_kasir     = $request->input('cashier_id');
-        $member_kode  = $request->input('member_kode');
-        $no_penjualan = $request->input('no_penjualan');
-        $grand_total  = $request->input('grand_total');
-        $uang_bayar   = $request->input('uang_bayar');
-        $kembalian    = $request->input('kembalian');
+        $id_kasir       = $request->input('cashier_id');
+        $member_kode    = $request->input('member_kode');
+        $penjualan_kode = $request->input('penjualan_kode');
+        $grand_total    = $request->input('grand_total');
+        $uang_bayar     = $request->input('uang_bayar');
+        $kembalian      = $request->input('kembalian');
 
         $member       = $this->getMemberByKode($member_kode);
 
         $penjualan = new Penjualan;
-        $penjualan->penjualan_kode      = $no_penjualan;
+        $penjualan->penjualan_kode      = $penjualan_kode;
         $penjualan->penjualan_total     = $grand_total;
         $penjualan->penjualan_nominal   = $uang_bayar;
         $penjualan->penjualan_kembalian = $kembalian;
@@ -213,6 +213,48 @@ class PenjualanController extends Controller
     public function clearPenjualanCart()
     {
         $delete = PenjualanDummy::truncate();
+    }
+
+    public static function getPenjualanCode()
+    {
+
+        $year       = date('Y'); // year now
+        $month      = date('m'); // month now
+        $default    = "0001"; // default value for incrementing
+        $key        = "PNJ";
+        $count      = DB::table('penjualan')->count();
+        if($count > 0)
+        {
+            // get last pembelian_kode value
+            $value          = DB::table('penjualan')->select('penjualan_kode')->whereYear('created_at', $year)->whereMonth('created_at', $month)->orderBy('penjualan_id', 'ASC')->get()->last();
+            $take_numeric   = substr($value->penjualan_kode, 3, 10); //2019110003 from PMB2019110003
+            $take_year      = substr($take_numeric, 0, 4); //2019 taking a year string
+            $take_month     = substr($take_numeric, 4, 2); //11 taking a month string
+            $take_increment = substr($take_numeric, 6, 3); // 003 taking a increment string
+            // if looping config
+            if($year == $take_year)
+            {
+                // nested loop if condition 1 is true
+                if($month == $take_month)
+                {
+                    // do the "sum" between $test value and 1
+                    $penjualan_kode = $take_numeric + 1;
+                }
+                else{
+                    // if condition 2 fail then generate with same year different month with default value
+                    $penjualan_kode = $year.$month.$default;
+                }
+            }
+            else{
+                // if condition 1 fail then generate with differet year and month with default value
+                $penjualan_kode = $year.$month.$default;
+            }
+        }
+        else{
+            $penjualan_kode = $year.$month.$default;
+        }
+
+        return response()->json($key.$penjualan_kode);
     }
 
     public function getMemberByKode($kode)

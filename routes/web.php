@@ -39,6 +39,7 @@ Route::group(['middleware' => ['auth', 'web', 'cekuser:1']], function(){
         Route::post('penjualan/clearPenjualanCart', 'Transaction\PenjualanController@clearPenjualanCart');
         Route::post('penjualan/insertPenjualanCart', 'Transaction\PenjualanController@insertPenjualanCart');
         Route::get('penjualan/getPenjualanCart', 'Transaction\PenjualanController@getPenjualanCart');
+        Route::get('penjualan/getPenjualanCode', 'Transaction\PenjualanController@getPenjualanCode');
         Route::get('penjualan/{id}/plusPenjualanCartQty', 'Transaction\PenjualanController@plusPenjualanCartQty');
         Route::get('penjualan/{id}/minusPenjualanCartQty', 'Transaction\PenjualanController@minusPenjualanCartQty');
         Route::get('penjualan/{id}/enterPenjualanCartQty', 'Transaction\PenjualanController@enterPenjualanCartQty');

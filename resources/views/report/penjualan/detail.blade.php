@@ -40,7 +40,7 @@
                                                 <th>Nama Produk</th>
                                                 <th>Quantity</th>
                                                 <th>Harga</th>
-                                                <th>Subtotal</th>
+                                                <th width="15%">Subtotal</th>
                                             </tr>
                                         </thead>
                                         <tbody id="report-body-table">
@@ -50,7 +50,7 @@
                                             <tr>
                                                 <th colspan="3"></th>
                                                 <th>Grand Total :</th>
-                                                <th>Rp. 100.000.000</th>
+                                                <th class="text-right"><p id="report-penjualan-total"></p></th>
                                             </tr>
                                         </tfoot>
                                     </table>

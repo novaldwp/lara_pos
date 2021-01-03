@@ -80,7 +80,7 @@ class ReportPenjualanController extends Controller
                             $q->with('produk');
                         }, 'user'])->where('penjualan_id', $id)->first();
         // $penjualan  = Penjualan::with(['penjualan_detail'])->where('penjualan_id', $id)->first();
-        // $penjualan['tanggal']   = tanggal_indonesia($penjualan->created_at);
+        $penjualan['tanggal']   = tanggal_indonesia($penjualan->created_at);
 
         return response()->json($penjualan);
     }
