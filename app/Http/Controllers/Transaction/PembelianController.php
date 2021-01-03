@@ -155,7 +155,7 @@ class PembelianController extends Controller
         {
             $fdummy                     = $fdummy->first();
             $fdummy->pembelian_jumlah   = $fdummy->pembelian_jumlah + $pembelian_jumlah;
-            $fdummy->subtotal           = $pembelian_jumlah * $produk_beli;
+            $fdummy->subtotal           = $fdummy->subtotal + ($pembelian_jumlah * $produk_beli);
 
             $fdummy->save();
         }
