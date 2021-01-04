@@ -65,7 +65,7 @@ class ReportPenjualanController extends Controller
         $pdf        = \App::make('dompdf.wrapper');
         $pdf->loadHTML($penjualan);
 
-        return $pdf->setPaper('a4', 'landscape')->stream(time().uniqid().'.pdf');
+        return $pdf->setPaper('a4', 'landscape')->stream('penjualan-'.time().'.pdf');
     }
 
     public function getReportPenjualan($filter)
