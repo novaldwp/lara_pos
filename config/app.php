@@ -168,6 +168,7 @@ return [
         Yajra\Datatables\DatatablesServiceProvider::class,
         Milon\Barcode\BarcodeServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
         /*
          * Application Service Providers...
@@ -232,6 +233,7 @@ return [
         'Datatables' => Yajra\Datatables\Facades\Datatables::class,
         'DNS1D' => Milon\Barcode\Facades\DNS1DFacade::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'Image' => Intervention\Image\Facades\Image::class,
     ],
 

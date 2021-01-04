@@ -107,34 +107,6 @@ $('document').ready(function(){
                         "sLast" : "Akhir",
                         "sEmptyTable" : "Data tidak ditemukan!"
                     }
-            },
-            "footerCallBack": function(row, data, start, end, display) {
-                var api = this.api(), data;
-
-                var intVal = function ( i ) {
-                    return typeof i === 'string' ?
-                        i.replace(/[\$,]/g, '')*1 :
-                        typeof i === 'number' ?
-                            i : 0;
-                };
-
-                total = api
-                    .column( 3 )
-                    .data()
-                    .reduce( function (a, b) {
-                        return intVal(a) + intVal(b);
-                    }, 0 );
-
-                pageTotal = api
-                        .column( 3, { page: 'current'} )
-                        .data()
-                        .reduce( function (a, b) {
-                            return intVal(a) + intVal(b);
-                        }, 0 );
-
-                $( api.column( 3 ).footer() ).html(
-                  'asdasd'+pageTotal +' ( '+ total +' )'
-                );
             }
         });
 
@@ -184,6 +156,23 @@ $('document').ready(function(){
         e.preventDefault();
         table.draw();
     });
+
+    $('body').on('click', '#toPDF', function(e) {
+        e.preventDefault();
+
+        let filter = $('#period').val();
+
+        $.ajax({
+            url: 'penjualan/toPDF',
+            method: 'POST',
+            data: {filter:filter},
+            dataType: 'JSON',
+            success: function(data)
+            {
+
+            }
+        })
+    })
 });
 </script>
 @endsection

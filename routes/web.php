@@ -60,6 +60,7 @@ Route::group(['middleware' => ['auth', 'web', 'cekuser:1']], function(){
     Route::group(['prefix' => 'report', 'as' => 'report.'], function() {
         Route::resource('penjualan', 'Report\ReportPenjualanController')
             ->only(['index', 'show']);
+        Route::post('penjualan/toPDF', 'Report\ReportPenjualanController@exportToPDF');
         Route::resource('pembelian', 'Report\ReportPembelianController')
             ->only(['index', 'show']);
     });
