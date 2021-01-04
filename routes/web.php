@@ -63,6 +63,7 @@ Route::group(['middleware' => ['auth', 'web', 'cekuser:1']], function(){
         Route::post('penjualan/toPDF', 'Report\ReportPenjualanController@exportToPDF');
         Route::resource('pembelian', 'Report\ReportPembelianController')
             ->only(['index', 'show']);
+        Route::post('pembelian/toPDF', 'Report\ReportPembelianController@exportToPDF');
     });
 });
 

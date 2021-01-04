@@ -162,6 +162,23 @@ $('document').ready(function(){
         e.preventDefault();
         table.draw();
     });
+
+    $('body').on('click', '#toPDF', function(e) {
+        e.preventDefault();
+
+        let filter = $('#period').val();
+
+        $.ajax({
+            url: 'pembelian/toPDF',
+            method: 'POST',
+            dataType: 'JSON',
+            data: {filter:filter},
+            success: function(data)
+            {
+
+            }
+        });
+    });
 });
 </script>
 @endsection
