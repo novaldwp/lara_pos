@@ -133,7 +133,7 @@ class ReportPenjualanController extends Controller
                     <td style="border: 1px solid;">'.$row->penjualan_detail[0]->total.'</td>
                     <td style="border: 1px solid;">'.date('d-m-Y', strtotime($row->created_at)).'</td>
                     <td style="border: 1px solid;">'.$row->user->name.'</td>
-                    <td style="border: 1px solid;">'.convert_ro_rupiah($row->penjualan_total).'</td>
+                    <td style="border: 1px solid;">'.convert_to_rupiah($row->penjualan_total).'</td>
                 </tr>
             ';
             $i++;
