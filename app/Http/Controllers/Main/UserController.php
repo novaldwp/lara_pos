@@ -185,6 +185,15 @@ class UserController extends Controller
         return $this->sendDelete();
     }
 
+    public function editProfile($id)
+    {
+        // $user = User::findOrFail($id);
+
+        // return view('main.user.profile');
+
+        return $id;
+    }
+
     public function uploadImage($img)
     {
         // check directory
