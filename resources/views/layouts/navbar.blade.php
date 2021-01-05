@@ -1,58 +1,3 @@
-{{-- variable for master session --}}
-@php
-    $nav_dashboard = ""; $nav_master = ""; $nav_user = ""; $nav_member = ""; $nav_stok = ""; $nav_transaksi = "";
-
-@endphp
-
-{{-- session nav active --}}
-@switch(Session::get('nav_active'))
-    @case("dashboard")
-        @php $nav_dashboard = 'active ' @endphp
-        @break
-    @case("master")
-        @php $nav_master = 'active ' @endphp
-        @break
-    @case("user")
-        @php $nav_user = 'active ' @endphp
-        @break
-    @case("member")
-        @php $nav_member = 'active ' @endphp
-        @break
-    @case("stok")
-        @php $nav_stok = 'active ' @endphp
-        @break
-    @case("transaksi")
-        @php $nav_transaksi = 'active ' @endphp
-        @break
-@endswitch
-{{-- end session nav active --}}
-
-{{-- variable for open treeview --}}
-@php
-    $sub_master_kategori = ""; $sub_master_supplier = ""; $sub_master_produk = "";
-    $sub_transaksi_pembelian = ""; $sub_transaksi_penjualan = "";
-@endphp
-
-{{-- session sub active --}}
-@switch(Session::get('sub_active'))
-    @case("kategori")
-        @php $sub_master_kategori = 'active' @endphp
-        @break
-    @case("supplier")
-        @php $sub_master_supplier = 'active' @endphp
-        @break
-    @case("produk")
-        @php $sub_master_produk = 'active' @endphp
-        @break
-    @case("pembelian")
-        @php $sub_transaksi_pembelian = 'active' @endphp
-        @break
-    @case("penjualan")
-        @php $sub_transaksi_penjualan = 'active' @endphp
-        @break
-@endswitch
-{{-- end session sub active --}}
-
 <!-- Left side column. contains the logo and sidebar -->
 <aside class="main-sidebar">
     <!-- sidebar: style can be found in sidebar.less -->
@@ -60,7 +5,7 @@
       <!-- Sidebar user panel -->
       <div class="user-panel">
         <div class="pull-left image">
-          <img src="images/{{ auth::user()->photo == "" ? 'no_avatar.png':'user/thumb/'.auth::user()->photo }}" class="img-circle" alt="User Image">
+          <img src="{{ URL::to((auth::user()->photo == '') ? 'images/no_avatar.png':'images/user/thumb/'.auth::user()->photo) }}" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
           <p>{{ auth::user()->name }}</p>

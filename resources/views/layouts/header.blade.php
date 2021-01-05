@@ -78,13 +78,13 @@
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <img src="images/{{ auth::user()->photo == "" ? 'no_avatar.png':'user/thumb/'.auth::user()->photo }}" class="user-image" alt="User Image">
+              <img src="{{ URL::to((auth::user()->photo == '') ? 'images/no_avatar.png':'images/user/thumb/'.auth::user()->photo) }}" class="user-image" alt="User Image">
               <span class="hidden-xs">{{ auth::user()->name }}</span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
               <li class="user-header">
-                <img src="images/{{ auth::user()->photo == "" ? 'no_avatar.png':'user/'.auth::user()->photo }}" class="img-circle" alt="User Image">
+                <img src="{{ URL::to((auth::user()->photo == '') ? 'images/no_avatar.png':'images/user/'.auth::user()->photo) }}" class="img-circle" alt="User Image">
                 <p>
                   {{ auth::user()->name }}
                 <small>{{ auth::user()->level == '1' ? 'Admin':'Operator'}}</small>
