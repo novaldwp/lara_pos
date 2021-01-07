@@ -9,6 +9,7 @@ use DB;
 use App\Models\Master\Produk;
 use App\Models\Main\Stok;
 use App\Models\Main\Member;
+use App\Models\Main\Setting;
 use App\Models\Transaction\Penjualan;
 use App\Models\Transaction\PenjualanDetail;
 use App\Models\Transaction\PenjualanDummy;
@@ -206,8 +207,11 @@ class PenjualanController extends Controller
         endforeach;
 
         $this->clearPenjualanCart();
+        $setting = Setting::first();
+        $data    = $this->getLastTransactionPenjualan();
+        $view = view('transaction.penjualan.print', compact(['setting', 'data']));
 
-        return response()->json(['data' => $fetchstok]);
+        return $view->render();
     }
 
     public function clearPenjualanCart()
@@ -262,5 +266,14 @@ class PenjualanController extends Controller
         $member = Member::where('member_kode', $kode)->first();
 
         return $member;
+    }
+
+    public function getLastTransactionPenjualan()
+    {
+        $penjualan = Penjualan::with(['penjualan_detail', 'member', 'user', 'penjualan_detail.produk'])
+                        ->orderBy('penjualan_id', 'DESC')
+                        ->first();
+
+        return $penjualan;
     }
 }

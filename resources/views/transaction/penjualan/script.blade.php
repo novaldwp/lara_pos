@@ -274,7 +274,7 @@ $('document').ready(function(){
             $.ajax({
                 url: 'penjualan/insertPenjualanData',
                 type: 'POST',
-                dataType: 'JSON',
+                dataType: 'html',
                 data: {
                     grand_total:grand_total, uang_bayar:uang_bayar,
                     kembalian:kembalian, cashier_id:cashier_id, member_kode:member_kode, penjualan_kode:penjualan_kode
@@ -287,11 +287,16 @@ $('document').ready(function(){
                     swal({
                         type: "success",
                         title: "Success!",
-                        text: "The payment is successfully complete!",
+                        text: "Proses Transaksi Penjualan Berhasil",
                         timer: 2000,
                         showConfirmButton: false
                     })
                     .then(function(){
+                        var w = window.open(window.location.href,"_blank");
+                        w.document.open();
+                        w.document.write(res);
+                        w.document.close();
+                        w.window.print();
                         $('#no_penjualan').val('');
                         $('#grand_total').val('');
                         $('#uang_bayar').val('');

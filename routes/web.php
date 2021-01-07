@@ -4,7 +4,9 @@ use App\PembelianDummy;
 
 // auth with disabble register, reset password and forgot password
 Auth::routes(['register' => false, 'reset' => false, 'request' => false]);
-
+Route::get('coba', function() {
+    return view('coba');
+});
 // route yang hanya bisa diakses oleh user role 1 => 'admin'
 Route::group(['middleware' => ['auth', 'web', 'cekuser:1']], function(){
 
@@ -63,7 +65,7 @@ Route::group(['middleware' => ['auth', 'web', 'cekuser:1']], function(){
     Route::group(['prefix' => 'report', 'as' => 'report.'], function() {
         Route::resource('penjualan', 'Report\ReportPenjualanController')
             ->only(['index', 'show']);
-        Route::post('penjualan/toPDF', 'Report\ReportPenjualanController@exportToPDF');
+            Route::post('penjualan/toPDF', 'Report\ReportPenjualanController@exportToPDF');
         Route::resource('pembelian', 'Report\ReportPembelianController')
             ->only(['index', 'show']);
         Route::post('pembelian/toPDF', 'Report\ReportPembelianController@exportToPDF');

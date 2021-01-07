@@ -30,7 +30,7 @@
                                     <div class="form-group">
                                         <label class="control-label col-sm-4">Kode Member:</label>
                                         <div class="col-sm-8">
-                                            <input type="text" class="form-control" id="member_kode" name="member_kode" maxlength="7" pattern="[0-7]" value="">
+                                            <input type="text" class="form-control" id="member_kode" name="member_kode" maxlength="7" pattern="[0-7]" value="" autocomplete="off">
                                         </div>
                                     </div>
 
@@ -63,7 +63,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Uang Bayar:</label>
                                     <div class="col-sm-8">
-                                        <input type="text" class="form-control" id="uang_bayar" name="uang_bayar" pattern="[0-9]" required>
+                                        <input type="text" class="form-control" id="uang_bayar" name="uang_bayar" pattern="[0-9]" required autocomplete="off">
                                     </div>
                                 </div>
 
