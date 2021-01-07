@@ -16,7 +16,7 @@ class UbahTabelUsers extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->string('phone');
             $table->string('birthdate');
-            $table->string('photo', 100)->nullable();
+            $table->string('photo')->nullable();
             $table->enum('level',['2', '1']);
         });
     }
