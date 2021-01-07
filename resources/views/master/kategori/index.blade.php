@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('header')
+    Kategori
+@endsection
+
 @section('title')
   Daftar Data Kategori
 @endsection

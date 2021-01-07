@@ -49,7 +49,7 @@
         },
         submitHandler: function(form) {
             let formdata    = new FormData($("#setting_form")[0]);
-                
+
             $.ajax({
                 url: "{{ route('setting.store') }}",
                 method: "POST",
@@ -72,12 +72,13 @@
                     $('#setting_phone').val(data.setting.setting_phone);
                     $('#setting_alamat').val(data.setting.setting_alamat);
                     $('#setting_image').val('');
-                        
+
                     $('#setting_showImage').html(html);
 
                     // sweetalert notify success
                     swal({
-                        title: data.message,
+                        title: "Berhasil",
+                        text: data.message,
                         type: "success",
                         timer: 2000,
                         showConfirmButton: false

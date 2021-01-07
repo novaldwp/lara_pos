@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('header')
+    Produk
+@endsection
+
 @section('title')
   Daftar Data Produk
 @endsection

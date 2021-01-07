@@ -120,7 +120,8 @@
                             table.ajax.reload();
                             // sweetalert notify success
                             swal({
-                                title: data.message,
+                                title: "Berhasil!",
+                                text: data.message,
                                 type: "success",
                                 timer: 2000,
                                 showConfirmButton: false
@@ -141,7 +142,8 @@
                             table.ajax.reload();
                             // sweetalert notify success
                             swal({
-                                title: data.message,
+                                title: "Berhasil!",
+                                text: data.message,
                                 type: "success",
                                 timer: 2000,
                                 showConfirmButton: false

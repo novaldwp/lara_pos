@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('header')
+    Pengguna
+@endsection
+
 @section('title')
   Daftar Data Pengguna
 @endsection

@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('header')
+    Stok
+@endsection
+
 @section('title')
   Daftar Stok Produk
 @endsection

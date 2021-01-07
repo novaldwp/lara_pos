@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('header')
+    Pembeli
+@endsection
+
 @section('title')
   Daftar Data Pembeli
 @endsection

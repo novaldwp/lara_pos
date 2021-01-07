@@ -135,7 +135,7 @@
                 <li class="{{ Request::is('setting*') ? 'active' : '' }}">
                     <a href="{{ route('setting.index') }}">
                         <i class="fa fa-user"></i>
-                        <span>Setting</span>
+                        <span>Pengaturan</span>
                     </a>
                 </li>
             @endif

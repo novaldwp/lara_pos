@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('header')
+    Supplier
+@endsection
+
 @section('title')
   Daftar Data Supplier
 @endsection

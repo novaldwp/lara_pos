@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('header')
+    Pengaturan
+@endsection
+
 @section('title')
   Pengaturan Toko
 @endsection

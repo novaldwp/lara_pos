@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('header')
+    Transaksi Penjualan
+@endsection
+
 @section('title')
   Transaksi Penjualan Produk
 @endsection
