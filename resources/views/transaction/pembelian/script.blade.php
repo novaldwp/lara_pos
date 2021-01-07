@@ -172,13 +172,26 @@ $(document).ready(function(){
         if ($('#produk_id').val() == '')
         {
             swal({
-                title:"Pilih produk terlebih dahulu!",
+                title: "Error!",
+                text:"Pilih Produk Terlebih Dahulu.",
                 type: "warning",
                 timer: 1000,
                 showConfirmButton: false
             });
 
             $('#produk_kode').focus();
+        }
+        else if ($('#pembelian_jumlah').val() == '')
+        {
+            swal({
+                title: "Error!",
+                text:"Input Jumlah Beli Terlebih Dahulu.",
+                type: "warning",
+                timer: 1000,
+                showConfirmButton: false
+            });
+
+            $('#pembelian_jumlah').focus();
         }
         else{
             $.ajax({
@@ -201,7 +214,7 @@ $(document).ready(function(){
                 {
                     let res = xhr.responseTEXT;
 
-                    alert(rest);
+                    alert(res);
                 }
             });
         }

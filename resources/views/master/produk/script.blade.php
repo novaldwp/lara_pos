@@ -219,11 +219,11 @@ $(document).ready(function() {
             method: "GET",
             dataType: "JSON",
             success: function(data) {
+                console.log(window.location.origin);
                 let kategori_id = data.kategori_id,
-                    current     = $(location).attr('href'); // get url
-                    path        = current.replace("master/produk", "images/produk/"); // replace url
-                    image       = data.produk_image == "" ? path+"no_image.png" : path+data.produk_image;
-                    html        = '<img width="100" src='+image+'></img>';
+                    path        = window.location.origin;
+                    image       = data.produk_image == "" ? path+"/images/no_image.png" : path+'/images/produk/thumb/'+data.produk_image;
+                    html        = '<img width="100" height="80" src='+image+'></img>';
 
                 // passing from data to input text field
                 $('#produk_kode').val(data.produk_kode);
@@ -235,13 +235,13 @@ $(document).ready(function() {
                 $('.image-edit').html(html);
                 $('.image-edit').show();
                 $('#produk_id').val(data.produk_id);
+
                 // showing modal and other customize for update
                 modal.modal('show');
                 title.text('Edit produk');
                 action.val(me.hasClass('edit') ? 'Update' : 'Save')
                     .removeClass('btn-success')
                     .addClass('btn-primary');
-                // focus on text field produk_nama
                 $('#produk_nama').focus();
             }
         })

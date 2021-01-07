@@ -383,7 +383,8 @@ $(document).ready(function(){
         },
         // event if form button click
         submitHandler: function(form) {
-            let formdata = new FormData($("#profile_form")[0]); // using formdata because we upload image
+            let html, path, img,
+                formdata = new FormData($("#profile_form")[0]); // using formdata because we upload image
 
             $.ajax({
                 url: "{{ URL::to('user/update-profile') }}",
@@ -396,10 +397,18 @@ $(document).ready(function(){
                 data: formdata,
                 success: function(data)
                 {
+                    html = '';
+                    path = window.location.origin+'/images/';
+                    img  = data.photo == "" ? path+"no_avatar.png":path+"user/"+data.user.photo;
+                    html = '<a href='+img+' data-lightbox="image-1">';
+                    html += '<img src='+img+' width="100" height="80"></img>';
+                    html += '</a>';
+
                     $('#name').val(data.user.name);
                     $('#phone').val(data.user.phone);
                     $('#photo').val('');
                     $('#profile_showImage').html(html);
+                    $('img.profile-image').attr('src', img);
 
                     // sweetalert notify success
                     swal({
@@ -480,7 +489,7 @@ $(document).ready(function(){
                 {
                     // sweetalert notify success
                     swal({
-                        title: "Success"
+                        title: "Success",
                         text: data.message,
                         type: "success",
                         timer: 2000,
