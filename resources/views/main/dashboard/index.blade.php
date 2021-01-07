@@ -34,7 +34,7 @@
                 <!-- small box -->
                 <div class="small-box bg-green">
                     <div class="inner">
-                        <h3>{{ $countProduk }}</h3>
+                        <h3>{{ $countSupplier }}</h3>
                         <p>Total Supplier</p>
                     </div>
                     <div class="icon">
