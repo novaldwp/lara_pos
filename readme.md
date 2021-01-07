@@ -54,7 +54,7 @@ Untuk cara install aplikasi ini kepada komputer kamu dengan cara :
 - aktifkan xampp, lalu buka browser dengan url **localhost:8000**.
 - akan muncul halaman login jika berhasil, lalu masukkan username dan password.
 - untuk login menjadi admin dengan ketikkan **username: admin** dan **password: 123**.
-- untuk login menjadi petugas dengan ketikkan **username: opalski** dan **password: 123**.
+- untuk login menjadi petugas dengan ketikkan **username: petugas** dan **password: 123**.
 
 ## READ THIS
 Untuk hasil screenshot aplikasi ini sudah saya simpan di folder public/screenshot.
