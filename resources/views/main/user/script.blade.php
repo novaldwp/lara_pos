@@ -80,8 +80,8 @@ $(document).ready(function(){
     {
         $('#'+element).closest('.form-group')
         .removeClass('has-error');
-        $('.help-block').closest('#'+element).remove();
-        $('.spasi').closest('#'+element).remove();
+        $('span#'+element).remove();
+        $('div#'+element).remove();
     }
 
     // disable space function
@@ -96,6 +96,18 @@ $(document).ready(function(){
 
     $("#phone").on('keyup', function() {
         remove_notification("phone");
+    })
+
+    $("#old_password").on('keyup', function() {
+        remove_notification("old_password");
+    })
+
+    $("#password").on('keyup', function() {
+        remove_notification("password");
+    })
+
+    $("#password_confirmation").on('keyup', function() {
+        remove_notification("password_confirmation");
     })
 
     $('body').on('click', '#modal_button', function(e){
@@ -332,6 +344,172 @@ $(document).ready(function(){
                 })
             }
         });
+    });
+
+    // profile
+    // form validation
+    $("#profile_form").validate({
+        rules: {
+            name: {
+                required: true
+            },
+            phone: {
+                required: true,
+                number: true,
+                rangelength: [10,14]
+            },
+            birthdate: {
+                required: true
+            },
+            photo: {
+                extension: "jpg|jpeg|png|gif|svg"
+            }
+        },
+        highlight: function(element) {
+            $(element).closest('.form-group').addClass('has-error');
+        },
+        unhighlight: function(element) {
+            $(element).closest('.form-group').removeClass('has-error');
+        },
+        errorElement: 'span',
+        errorClass: 'help-block',
+        errorPlacement: function(error, element) {
+            if(element.parent('.input-group').length) {
+                error.insertAfter(element.parent());
+            }
+            else {
+                error.insertAfter(element);
+            }
+        },
+        // event if form button click
+        submitHandler: function(form) {
+            let formdata = new FormData($("#profile_form")[0]); // using formdata because we upload image
+
+            $.ajax({
+                url: "{{ URL::to('user/update-profile') }}",
+                method: "POST",
+                dataType: "JSON",
+                enctype: "multipart/form-data",
+                processData: false,
+                cache: false,
+                contentType: false,
+                data: formdata,
+                success: function(data)
+                {
+                    $('#name').val(data.user.name);
+                    $('#phone').val(data.user.phone);
+                    $('#photo').val('');
+                    $('#profile_showImage').html(html);
+
+                    // sweetalert notify success
+                    swal({
+                        title: data.message,
+                        type: "success",
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                },
+                error: function(xhr)
+                {
+                    // error notification config for unique data
+                    let res = xhr.responseJSON;
+                    // if error response is not empty
+                    if($.isEmptyObject(res) == false)
+                    {
+                        // then each object errors with the key and value
+                        $.each(res.errors, function(key, value)
+                        {
+                            // config the key of errors
+                            $('#' + key)
+                            .closest('.form-group')
+                            .addClass('has-error')
+                            .append(
+                                '<div class="col-md-2 spasi" id="'+key+'"></div>' +
+                                '<span class="help-block col-md-9" id="'+key+'"><strong>'+ value +'</strong></span>'
+                            )
+                        });
+                    }
+                }
+            });
+        }
+    });
+
+    // change password
+    $("#password_form").validate({
+        rules: {
+            old_password: {
+                required: true
+            },
+            password: {
+                required: true,
+                minlength: 3
+            },
+            password_confirmation: {
+                required: true,
+                minlength: 3
+            }
+        },
+        highlight: function(element) {
+            $(element).closest('.form-group').addClass('has-error');
+        },
+        unhighlight: function(element) {
+            $(element).closest('.form-group').removeClass('has-error');
+        },
+        errorElement: 'span',
+        errorClass: 'help-block',
+        errorPlacement: function(error, element) {
+            if(element.parent('.input-group').length) {
+                error.insertAfter(element.parent());
+            }
+            else {
+                error.insertAfter(element);
+            }
+        },
+        // event if form button click
+        submitHandler: function(form) {
+            remove_notification("old_password");
+            remove_notification("password");
+            remove_notification("password_confirmation");
+
+            $.ajax({
+                url: "{{ URL::to('user/update-password') }}",
+                method: "POST",
+                dataType: "JSON",
+                data: $('#password_form').serialize(),
+                success: function(data)
+                {
+                    // sweetalert notify success
+                    swal({
+                        title: "Success"
+                        text: data.message,
+                        type: "success",
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                },
+                error: function(xhr)
+                {
+                    // error notification config for unique data
+                    let res = xhr.responseJSON;
+                    // if error response is not empty
+                    if($.isEmptyObject(res) == false)
+                    {
+                        // then each object errors with the key and value
+                        $.each(res.errors, function(key, value)
+                        {
+                            // config the key of errors
+                            $('#' + key)
+                            .closest('.form-group')
+                            .addClass('has-error')
+                            .append(
+                                '<div class="col-md-2 spasi" id="'+key+'"></div>' +
+                                '<span class="help-block col-md-10" id="'+key+'"><strong>'+ value +'</strong></span>'
+                            )
+                        });
+                    }
+                }
+            });
+        }
     });
 });
 </script>

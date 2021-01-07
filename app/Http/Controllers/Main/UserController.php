@@ -8,6 +8,8 @@ use Session;
 use App\User;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
+use Auth;
+use Hash;
 
 class UserController extends Controller
 {
@@ -187,11 +189,64 @@ class UserController extends Controller
 
     public function editProfile($id)
     {
-        // $user = User::findOrFail($id);
+        $user = User::findOrFail($id);
 
-        // return view('main.user.profile');
+        return view('main.user.profile', compact('user'));
+    }
 
-        return $id;
+    public function updateProfile(Request $request)
+    {
+        $this->validate($request, [
+            'phone' => 'required|unique:users,phone,'.$request->id
+        ]);
+
+        $user = User::findOrFail($request->id);
+
+        if ($request->hasFile('photo'))
+        {
+            $file   = $request->file('photo');
+            $image  = $this->uploadImage($file);
+
+            if ($user->photo != "")
+            {
+                File::delete($this->oriPath.'/'.$user->photo);
+                File::delete($this->thumbPath.'/'.$user->photo);
+            }
+        }
+        else {
+            $image  = $user->photo;
+        }
+
+        $user->name     = $request->name;
+        $user->phone    = $request->phone;
+        $user->photo    = $image;
+        $user->save();
+
+        return response()->json(['message' => 'Update Profil Berhasil.', 'user' => $user]);
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $this->validate($request, [
+            'old_password'          => 'required',
+            'password'              => 'required|min:3|confirmed',
+            'password_confirmation' => 'required|same:password|min:3'
+        ]);
+
+        $user = User::findOrFail(Auth::user()->id);
+
+        if (!Hash::check($request->old_password, $user->password))
+        {
+            return response()->json([
+                'message' => 'The old password you entered is incorrect.',
+                'errors' => ['old_password' => 'The old password does not match our records.']
+            ], 400);
+        }
+
+        $user->password = bcrypt($request->password);
+        $user->save();
+
+        return response()->json(['message' => 'Successfully update password.']);
     }
 
     public function uploadImage($img)

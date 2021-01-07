@@ -25,6 +25,8 @@ Route::group(['middleware' => ['auth', 'web', 'cekuser:1']], function(){
     Route::resource('user', 'Main\UserController')
         ->except(['create', 'show']);
     Route::get('user/edit-profile/{id}', 'Main\UserController@editProfile');
+    Route::post('user/update-profile', 'Main\UserController@updateProfile');
+    Route::post('user/update-password', 'Main\UserController@updatePassword');
     Route::resource('member', 'Main\MemberController')
         ->except(['create', 'show']);
     Route::get('member/createMemberCode', 'Main\MemberController@createMemberCode');
