@@ -17,6 +17,15 @@ class KategoriTableSeeder extends Seeder
             ],
             [
                 'kategori_nama' => 'Pasta Gigi'
+            ],
+            [
+                'kategori_nama' => 'Obat'
+            ],
+            [
+                'kategori_nama' => 'Sabun'
+            ],
+            [
+                'kategori_nama' => 'Chiki'
             ]
         ));
     }

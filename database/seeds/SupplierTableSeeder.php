@@ -13,22 +13,34 @@ class SupplierTableSeeder extends Seeder
     {
         DB::table('supplier')->insert(array(
             [
-                'supplier_nama'     => 'PT. Indofood Sukses Makmur',
-                'supplier_alamat'   => 'Indofood Tower, Sudirman Plaza, Jl. Jend Sudirman No. Kav. 76-78',
-                'supplier_kontak'   => 'Sudono Salim',
+                'supplier_nama'     => 'Agen Jatiwaringin',
+                'supplier_alamat'   => 'Jl. Jatiwaringin Barat Daya No. 9C',
+                'supplier_kontak'   => 'Bang Jate',
                 'supplier_phone'   => '08992819281'
             ],
             [
-                'supplier_nama'     => 'PT. Lion Wings',
+                'supplier_nama'     => 'Agen Makmur',
                 'supplier_alamat'   => 'Jl. Inspeksi Cakung Drain Timur No.1, Cakung Barat',
-                'supplier_kontak'   => 'Bapak Singa',
+                'supplier_kontak'   => 'Si Makmur',
                 'supplier_phone'   => '085281829181'
             ],
             [
-                'supplier_nama'     => 'PT. Unilever Indonesia',
-                'supplier_alamat'   => 'Menara Duta Lt. 5, Jl. HR Rasuna Said, Kuningan',
-                'supplier_kontak'   => 'Lever Brothers',
+                'supplier_nama'     => 'Toko Lestari Indah',
+                'supplier_alamat'   => 'Jl. Kemanggisan Ilir XI No. 31C',
+                'supplier_kontak'   => 'Lestari Sukma Putri',
                 'supplier_phone'   => '08221928123'
+            ],
+            [
+                'supplier_nama'     => 'Agen Lionwings Jakarta',
+                'supplier_alamat'   => 'Jl. Meruya Barat XI No. 32F',
+                'supplier_kontak'   => 'Sudino Uno',
+                'supplier_phone'   => '08223315513'
+            ],
+            [
+                'supplier_nama'     => 'Aneka Mie Instan',
+                'supplier_alamat'   => 'Jl. Daan Mogot Timur No. 11A',
+                'supplier_kontak'   => 'Kelvin',
+                'supplier_phone'   => '08559192921'
             ]
         ));
     }

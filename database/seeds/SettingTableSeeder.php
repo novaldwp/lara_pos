@@ -16,7 +16,7 @@ class SettingTableSeeder extends Seeder
                 'setting_nama' => 'Yuhumart',
                 'setting_alamat' => 'Jl. Melati Putih, Kemanggisan, Palmerah, Jakarta Barat',
                 'setting_phone' => '08992652281',
-                'setting_image' => '',
+                'setting_image' => '1610051990.5ff77196aa775.png',
             ]
         ));
     }

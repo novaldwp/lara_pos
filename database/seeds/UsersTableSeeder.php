@@ -16,27 +16,18 @@ class UsersTableSeeder extends Seeder
             'username'  => 'admin',
             'password'  => bcrypt('123'),
             'phone'     =>  '08992652281',
-            'birthdate' => '1995-11-17',
-            'photo'     => '',
-            'level'     => 1
+            'birthdate' => '08-06-1994',
+            'photo'     => '1610051888.5ff77130d1924.png',
+            'level'     => '1'
         ],
         [
             'name'      => 'Noval Dwi Putra',
-            'username'  => 'opalski',
+            'username'  => 'petugas',
             'password'  => bcrypt('123'),
-            'phone'     =>  '08992652281',
-            'birthdate' => '1995-11-17',
-            'photo'     => '',
-            'level'     => 2
-        ],
-        [
-            'name'      => 'Devitha Octaviani',
-            'username'  => 'devidiot',
-            'password'  => bcrypt('password'),
-            'phone'     => '082211702979',
-            'birthdate' => '1996-10-24',
-            'photo'     => '',
-            'level'     => 2
+            'phone'     => '0899265228',
+            'birthdate' => '17-11-1995',
+            'photo'     => '1610051851.5ff7710be12b4.png',
+            'level'     => '2'
         ]
         ));
     }

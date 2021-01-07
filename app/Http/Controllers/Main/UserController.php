@@ -26,21 +26,27 @@ class UserController extends Controller
     {
         // fetch query
         $user = User::orderBy('id', 'DESC')
+                    ->where('id', '!=', Auth::user()->id)
                     ->get();
 
         // ajax request with datatables
         if(request()->ajax()) {
             return datatables()->of($user)
             ->addColumn('action', function($data){
-                $button = '
-                    <a name="edit" data="'.$data->id.'" id="edit" class="edit btn btn-primary btn-sm">Edit </a>
-                ';
-                $button .= '
-                    &nbsp;&nbsp;
-                ';
-                $button .= '
-                    <a name="delete" data="'.$data->id.'" id="delete" class="delete btn btn-danger btn-sm">Delete </a>
-                ';
+                if(!Auth::user()->id != $data->id) {
+                    $button = '
+                        <a name="edit" data="'.$data->id.'" id="edit" class="edit btn btn-primary btn-sm">Edit </a>
+                    ';
+                    $button .= '
+                        &nbsp;&nbsp;
+                    ';
+                    $button .= '
+                        <a name="delete" data="'.$data->id.'" id="delete" class="delete btn btn-danger btn-sm">Delete </a>
+                    ';
+                }
+                else {
+                    $button = '';
+                }
                 return $button;
             })
             ->addColumn('level', function($data){
@@ -49,8 +55,8 @@ class UserController extends Controller
                 return $level;
             })
             ->addColumn('image', function($data){
-                $thumbPath  = url('images/'.(($data->photo == "") ? "no_image.png":"user/thumb/".$data->photo));
-                $oriPath    = url('images/'.(($data->photo == "") ? "no_image.png":"user/".$data->photo));
+                $thumbPath  = url('images/'.(($data->photo == "") ? "no_avatar.png":"user/thumb/".$data->photo));
+                $oriPath    = url('images/'.(($data->photo == "") ? "no_avatar.png":"user/".$data->photo));
 
                 // image via lightbox2 js
                 $image  = '
