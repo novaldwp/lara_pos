@@ -3,7 +3,7 @@
               <div class="modal-content">
                     <div class="modal-header">
                           <button type="button" class="close" data-dismiss="modal">&times;</button>
-                          <h4 id="modal-title" class="modal-title">Tambah User Baru</h4>
+                          <h4 id="modal-title" class="modal-title">Tambah Pengguna Baru</h4>
                     </div>
                     <form method="post" id="modal_form" class="form-horizontal" enctpye="multipart/form-data">
                           <div class="modal-body">

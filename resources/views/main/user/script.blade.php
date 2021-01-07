@@ -117,11 +117,12 @@ $(document).ready(function(){
             action  = $('#action'),
             modal   = $('#formModal');
 
-        title.text('Tambah user Baru');
+        title.text('Tambah Data Pengguna');
             action.val(me.hasClass('edit') ? 'Update' : 'Save')
                 .removeClass('btn-primary')
                 .addClass('btn-success');
 
+        $('.image-edit').hide();
         $("#modal_form")[0].reset();
         modal.modal('show');
     });
@@ -302,7 +303,7 @@ $(document).ready(function(){
                 $('#id').val(data.id);
                 // showing modal and other customize for update
                 modal.modal('show');
-                title.text('Edit user');
+                title.text('Ubah Data Pengguna');
                 action.val(me.hasClass('edit') ? 'Update' : 'Save')
                     .removeClass('btn-success')
                     .addClass('btn-primary');
