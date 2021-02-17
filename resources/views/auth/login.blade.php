@@ -17,13 +17,6 @@
   <!-- iCheck -->
   <link rel="stylesheet" href="{{ asset('adminLTE/plugins/iCheck/square/blue.css') }}">
 
-  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-  <![endif]-->
-
   <!-- Google Font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
@@ -38,9 +31,14 @@
 
     <form action="{{ route('login') }}" method="post">
     {{ csrf_field() }}
-      <div class="form-group has-feedback">
-        <input type="text" class="form-control" name="username" placeholder="Username" autofocus>
+      <div class="form-group has-feedback @error('username') has-error @enderror">
+        <input type="text" class="form-control" name="username" placeholder="Username" autocomplete="off" autofocus>
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+        @if ($errors->has('username'))
+            <span class="text-danger" role="alert">
+                <strong>{{ $errors->first('username') }}</strong>
+            </span>
+        @endif
       </div>
       <div class="form-group has-feedback">
         <input type="password" class="form-control" name="password" placeholder="Password">

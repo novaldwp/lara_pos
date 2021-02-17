@@ -112,6 +112,12 @@ $(document).ready(function(){
                 }
             });
         }
+        else {
+            $('#produk_id').val('');
+            $('#produk_nama').val('');
+            $('#produk_beli').val('');
+            $('#stok_jumlah').val('');
+        }
     });
 
     function getPembelianCode()

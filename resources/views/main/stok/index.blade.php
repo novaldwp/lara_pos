@@ -5,7 +5,7 @@
 @endsection
 
 @section('title')
-  Daftar Stok Produk
+  Daftar Data Stok Produk
 @endsection
 
 @section('breadcrumb')

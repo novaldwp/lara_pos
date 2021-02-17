@@ -28,14 +28,14 @@
                                         </div>
 
                                     <div class="form-group">
-                                        <label class="control-label col-sm-4">Kode Member:</label>
+                                        <label class="control-label col-sm-4">Kode Pembeli:</label>
                                         <div class="col-sm-8">
                                             <input type="text" class="form-control" id="member_kode" name="member_kode" maxlength="7" pattern="[0-7]" value="" autocomplete="off">
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="control-label col-sm-4">Nama Member:</label>
+                                        <label class="control-label col-sm-4">Nama Pembeli:</label>
                                         <div class="col-sm-8">
                                             <input type="text" class="form-control" id="member_nama" name="member_nama" value="Umum" readonly>
                                         </div>
@@ -83,7 +83,7 @@
                             <dl>
                                 <dt><b>*Keterangan :</b></dt>
                                 <div class="data-description" style="margin-left:25%">
-                                    <dd><b>[F6]</b> = ID Member</dd>
+                                    <dd><b>[F6]</b> = Kode Pembeli</dd>
                                     <dd><b>[F7]</b> = Uang Bayar</dd>
                                     <dd><b>[F8]</b> = Uang Pas</dd>
                                 </div>

@@ -51,7 +51,7 @@
 
     <div class="col-sm-12">
         <div class="form-button text-center">
-            <a href="javascript:void(0);" class="btn btn-danger">Reset [F2]</a>
+            <a href="javascript:void(0);" class="btn btn-danger" name="reset" id="reset">Reset [F2]</a>
             &nbsp;&nbsp;&nbsp;
             <a href="javascript:void(0);" class="btn btn-success" name="pay" id="pay">Bayar [F4]</a>
         </div>

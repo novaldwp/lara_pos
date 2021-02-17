@@ -205,6 +205,8 @@ $('document').ready(function(){
 
     shortcut.add("F2", function(){
         clearPenjualanCart();
+
+        $('#detail-cart').hide();
     });
 
     shortcut.add("F4", function(){
@@ -228,6 +230,13 @@ $('document').ready(function(){
         e.preventDefault();
         payment_modal();
     });
+
+    $('body').on('click', '#reset', function(e) {
+        e.preventDefault();
+        clearPenjualanCart();
+
+        $('#detail-cart').hide();
+    })
 
     $('body').on('click', '#save', function(e){
 

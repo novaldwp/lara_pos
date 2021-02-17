@@ -25,10 +25,10 @@
           <thead>
             <tr>
                 <th width="30">No</th>
-                <th>Kode Member</th>
-                <th>Nama</th>
+                <th>Kode Pembeli</th>
+                <th>Nama Pembeli</th>
                 <th>No. Handphone</th>
-                <th>Alamat Member</th>
+                <th>Alamat</th>
                 <th>Aksi</th>
             </tr>
           </thead>

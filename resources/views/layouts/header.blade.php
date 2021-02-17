@@ -1,3 +1,6 @@
+<?php
+$start_time = microtime(TRUE);
+?>
 <!DOCTYPE html>
 <html>
 <head>

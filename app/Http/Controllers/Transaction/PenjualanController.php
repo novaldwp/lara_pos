@@ -226,11 +226,11 @@ class PenjualanController extends Controller
         $month      = date('m'); // month now
         $default    = "0001"; // default value for incrementing
         $key        = "PNJ";
-        $count      = DB::table('penjualan')->count();
+        $count      = DB::table('penjualan')->whereYear('created_at', $year)->whereMonth('created_at', $month)->count();
         if($count > 0)
         {
             // get last pembelian_kode value
-            $value          = DB::table('penjualan')->select('penjualan_kode')->whereYear('created_at', $year)->whereMonth('created_at', $month)->orderBy('penjualan_id', 'ASC')->get()->last();
+            $value          = DB::table('penjualan')->select('penjualan_kode')->orderBy('penjualan_id', 'DESC')->first();
             $take_numeric   = substr($value->penjualan_kode, 3, 10); //2019110003 from PMB2019110003
             $take_year      = substr($take_numeric, 0, 4); //2019 taking a year string
             $take_month     = substr($take_numeric, 4, 2); //11 taking a month string

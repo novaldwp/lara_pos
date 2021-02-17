@@ -175,7 +175,7 @@
                     $('#supplier_nama').val(data.supplier_nama);
                     $('#supplier_alamat').val(data.supplier_alamat);
                     $('#supplier_kontak').val(data.supplier_kontak);
-                    $('#supplier_telpon').val(data.supplier_telpon);
+                    $('#supplier_phone').val(data.supplier_phone);
                     $('#supplier_id').val(data.supplier_id);
                     // showing modal and other customize for update
                     modal.modal('show');

@@ -11,7 +11,7 @@
                             @csrf
                             <div class="form-group">
                                 <label class="control-label col-md-4">
-                                        Kode Member:
+                                        Kode Pembeli:
                                 </label>
                                 <div class="col-md-8">
                                         <input type="text" name="member_kode" id="member_kode" class="form-control" autocomplete="off" readonly autofocus>
@@ -19,7 +19,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-md-4">
-                                        Nama Member:
+                                        Nama Pembeli:
                                 </label>
                                 <div class="col-md-8">
                                         <input type="text" name="member_nama" id="member_nama" class="form-control" autocomplete="off" autofocus>
@@ -35,7 +35,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-md-4">
-                                        Alamat Member:
+                                        Alamat:
                                 </label>
                                 <div class="col-md-8">
                                         <textarea name="member_alamat" id="member_alamat" class="form-control" cols="58" rows="3" autocomplete="off"></textarea>

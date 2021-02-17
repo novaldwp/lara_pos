@@ -13,6 +13,7 @@ class StokController extends Controller
     public function index()
     {
         $stok = Stok::with(['produk'])
+                    ->whereNotNull('produk_id')
                     ->orderBy('stok_id', 'DESC')
                     ->get();
 

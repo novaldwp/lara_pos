@@ -19,7 +19,7 @@
                                 </div>
                                 <div class="form-group">
                                       <label class="control-label col-md-4">
-                                            Kontak Supplier:
+                                            Kontak:
                                       </label>
                                       <div class="col-md-8">
                                             <input type="text" name="supplier_kontak" id="supplier_kontak" class="form-control" autocomplete="off">
@@ -35,7 +35,7 @@
                                 </div>
                                 <div class="form-group">
                                       <label class="control-label col-md-4">
-                                            Alamat Supplier:
+                                            Alamat:
                                       </label>
                                       <div class="col-md-8">
                                             <textarea name="supplier_alamat" id="supplier_alamat" class="form-control" cols="58" rows="3" autocomplete="off"></textarea>

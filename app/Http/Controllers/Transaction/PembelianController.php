@@ -92,11 +92,11 @@ class PembelianController extends Controller
         $month      = date('m'); // month now
         $default    = "0001"; // default value for incrementing
         $key        = "PMB";
-        $count      = DB::table('pembelian')->count();
+        $count      = DB::table('pembelian')->whereYear('created_at', $year)->whereMonth('created_at', $month)->count();
         if($count > 0)
         {
             // get last pembelian_kode value
-            $value          = DB::table('pembelian')->select('pembelian_kode')->whereYear('created_at', $year)->whereMonth('created_at', $month)->orderBy('pembelian_id', 'ASC')->get()->last();
+            $value          = DB::table('pembelian')->select('pembelian_kode')->orderBy('pembelian_id', 'DESC')->first();
             $take_numeric   = substr($value->pembelian_kode, 3, 10); //2019110003 from PMB2019110003
             $take_year      = substr($take_numeric, 0, 4); //2019 taking a year string
             $take_month     = substr($take_numeric, 4, 2); //11 taking a month string
@@ -174,7 +174,7 @@ class PembelianController extends Controller
     public function enterPembelianCartQty(Request $request, $id)
     {
         $qty    = $request->input('qty');
-        $pdummy = PembelianDummy::where('pembeliandummy_id', $id);
+        $pdummy = PembelianDummy::where('produk_id', $id);
 
         if ($pdummy->count() != 0)
         {
